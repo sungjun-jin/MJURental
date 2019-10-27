@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "770800875042",
+    "firebase_url": "https://projectmjurental.firebaseio.com",
+    "project_id": "projectmjurental",
+    "storage_bucket": "projectmjurental.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770800875042:android:c81f4f34f1cb0a6ada7c7b",
+        "android_client_info": {
+          "package_name": "com.example.projectmjurental"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "770800875042-2l3j0b1rbi7tg4kvfj234sdoce6i1ecr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.projectmjurental",
+            "certificate_hash": "de592ca709170e3f5712719caf6d8d0fc135d27e"
+          }
+        },
+        {
+          "client_id": "770800875042-9ka3ldshmqo05d4tjhu2j7ti1pvm293m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjHOQIHKQ3U8IlNe_V2nOUWTKUC4nCh5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "770800875042-9ka3ldshmqo05d4tjhu2j7ti1pvm293m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
