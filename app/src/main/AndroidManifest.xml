@@ -21,23 +21,17 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:theme">
 
+        <activity android:name=".RentalActivity">
+        </activity>
+
         <activity android:name=".QRActivity">
-
-
         </activity>
 
         <activity android:name="org.tensorflow.demo.DetectorActivity">
-
-
-
-
         </activity>
 
 
         <activity android:name=".LoginActivity">
-
-
-            <!-- 로그인 액티비티 -->
 
             <!-- 엑티비티 런쳐 -->
             <intent-filter>
@@ -47,8 +41,8 @@
             </intent-filter>
 
             <!-- 엑티비티 런쳐 -->
-
         </activity>
+
         <activity android:name=".user.JoinActivity" />
         <activity android:name=".kakao.KakaoActivity">
 
@@ -64,8 +58,6 @@
                 <!-- 로그인 액티비티 -->
 
             </intent-filter>
-
-
         </activity>
         <activity android:name=".MainActivity">
 

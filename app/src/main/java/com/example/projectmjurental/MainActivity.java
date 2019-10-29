@@ -165,8 +165,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.logout:
 
                     //로그아웃
-                    Toast.makeText(getApplicationContext(), "로그아웃 버튼", Toast.LENGTH_SHORT).show();
-
                     //현재 로그인한 회원은 로그아웃
                     mAuth.signOut();
                     Intent intent = new Intent(getApplicationContext(),LoginActivity.class);

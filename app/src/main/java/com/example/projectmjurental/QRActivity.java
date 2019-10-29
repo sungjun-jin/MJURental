@@ -56,15 +56,17 @@ public class QRActivity extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+
                     //대여 물품의 정보를 입력받는다
                     rentalObject = result.getContents();
+
                     Log.d("DEBUG_CODE", "대여물품 : " + rentalObject);
 
 
-//                    Intent intent = new Intent(this.getApplicationContext(),RentalActivity.class);
-//                    intent.putExtra("Object",rentalObject);
-//                    startActivity(intent);
-
+                    Intent intent = new Intent(this.getApplicationContext(),RentalActivity.class);
+                    intent.putExtra("Object",rentalObject);
+                    startActivity(intent); //대여 액티비티로 대여물품의 정보를 넘겨주고 이동
+                    finish();
 
                 }
             }

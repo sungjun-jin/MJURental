@@ -1,4 +1,4 @@
-package com.example.projectmjurental;
+package com.example.projectmjurental.data;
 
 /*
 사용자의 정보를 담는 데이터 클래스
