@@ -2,29 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-
         <item
             android:id="@+id/account"
-            android:title="계정">
-
+            android:title="회원정보">
         </item>
-
     </group>
 
     <group android:checkableBehavior="single">
-
         <item
             android:id="@+id/setting"
             android:title="고장신고">
 
         </item>
-
         <item
             android:id="@+id/logout"
             android:title="로그아웃">
-
         </item>
-
     </group>
-
 </menu>

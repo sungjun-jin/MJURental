@@ -151,15 +151,27 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId()) {
 
                 case R.id.account:
+
+                    //회원정보
                     Toast.makeText(getApplicationContext(), "계정 버튼", Toast.LENGTH_SHORT).show();
                     break;
 
                 case R.id.setting:
-                    Toast.makeText(getApplicationContext(), "설정 버튼", Toast.LENGTH_SHORT).show();
+
+                    //고장신고
+                    Toast.makeText(getApplicationContext(), "고장신고 버튼", Toast.LENGTH_SHORT).show();
                     break;
 
                 case R.id.logout:
+
+                    //로그아웃
                     Toast.makeText(getApplicationContext(), "로그아웃 버튼", Toast.LENGTH_SHORT).show();
+
+                    //현재 로그인한 회원은 로그아웃
+                    mAuth.signOut();
+                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                     break;
             }
 
