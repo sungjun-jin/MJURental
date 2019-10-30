@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.projectmjurental.data.Rent;
 import com.example.projectmjurental.user.User;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnQR.setOnClickListener(view -> {
 
-            Intent intent = new Intent(getApplicationContext(),QRActivity.class);
+            Intent intent = new Intent(getApplicationContext(), QRActivity.class);
             startActivity(intent);
         });
 
@@ -64,9 +65,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
-
-
+        showRentInfo();
     }
 
     private void init() {
@@ -111,9 +110,6 @@ public class MainActivity extends AppCompatActivity {
                     if (user.email.equals(email)) {
 
                         currentUser = user;
-
-                        Log.i("DEBUG_CODE", "회원 비밀번호 : " + currentUser.password);
-                        Log.i("DEBUG_CODE", "회원 학번 : " + currentUser.num);
 
 
                         //로그인이 성공하면 메인엑테비티에 navigationview header에 사용자에 대한 정보를 표시
@@ -167,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                     //로그아웃
                     //현재 로그인한 회원은 로그아웃
                     mAuth.signOut();
-                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
                     finish();
                     break;
@@ -196,6 +192,28 @@ public class MainActivity extends AppCompatActivity {
             //그냥 사용자가 뒤로가기를 누르면 뒤로간다
             super.onBackPressed();
         }
+
+    }
+
+    public void showRentInfo() {
+
+        //대여한 물품의 정보를 가져옴
+
+        Intent intent = getIntent();
+
+
+        if (intent.getSerializableExtra("Rent") != null) {
+
+            Rent rent = (Rent) intent.getSerializableExtra("Rent");
+
+            //로그 테스트
+            Log.i("DEBUG_CODE", "메인 액티비티 : " + rent.getModelName());
+            Log.i("DEBUG_CODE", "메인 액티비티 : " + rent.getModelInfo());
+            Log.i("DEBUG_CODE", "메인 액티비티 : " + rent.getDeposit() + "");
+            Log.i("DEBUG_CODE", "메인 액티비티 : " + rent.available + "");
+            //로그 테스트
+        }
+
 
     }
 

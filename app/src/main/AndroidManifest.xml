@@ -41,6 +41,7 @@
             </intent-filter>
 
             <!-- 엑티비티 런쳐 -->
+
         </activity>
 
         <activity android:name=".user.JoinActivity" />

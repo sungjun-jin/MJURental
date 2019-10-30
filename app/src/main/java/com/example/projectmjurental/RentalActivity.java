@@ -3,6 +3,7 @@ package com.example.projectmjurental;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -13,15 +14,16 @@ import com.example.projectmjurental.data.Battery;
 import com.example.projectmjurental.data.Calculator;
 import com.example.projectmjurental.data.Const;
 import com.example.projectmjurental.data.Notebook;
+import com.example.projectmjurental.data.Rent;
 import com.example.projectmjurental.fragment.FragmentAdapter;
 import com.example.projectmjurental.fragment.ImageFragment;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import static com.example.projectmjurental.data.Const.notebook;
 
 public class RentalActivity extends AppCompatActivity {
+
 
     TextView textObject, textObjectInfo; //대여물품, 대여물품정보
     Button btnDeposit, btnRent;
@@ -31,6 +33,8 @@ public class RentalActivity extends AppCompatActivity {
     ArrayList<Integer> listImage = new ArrayList<>();
 
     FragmentAdapter fragmentAdapter;
+
+    Rent rent = null;
 
 
     @Override
@@ -45,9 +49,35 @@ public class RentalActivity extends AppCompatActivity {
 //        rentalObject = "명지대학교배터리";
 //        rentalObject = "명지대학교계산기";
 
-        getRentalObject();
-
+        rent = getRentalObject();
         setImage();
+
+        //로그 테스트
+        Log.i("DEBUG_CODE", rent.modelName);
+        Log.i("DEBUG_CODE", rent.modelInfo);
+        Log.i("DEBUG_CODE", rent.deposit + "");
+        Log.i("DEBUG_CODE", rent.available + "");
+        //로그 테스트
+
+        btnRent.setOnClickListener(view -> {
+
+            //대여 버튼 누를 시
+
+            //보증금 조건 검사 후, 물품의 대여 가능 여부 후 실행
+
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("Rent",rent);
+            startActivity(intent);
+            finish();
+
+
+        });
+
+        btnDeposit.setOnClickListener(view -> {
+
+            //보증금 결제 누를 시
+
+        });
     }
 
     void setImage() {
@@ -62,7 +92,7 @@ public class RentalActivity extends AppCompatActivity {
 
         if (rentalObject.equals(notebook)) {
 
-            Log.i("DEBUG_CODE","노트북");
+            Log.i("DEBUG_CODE", "노트북");
 
             listImage.add(R.drawable.gram1);
             listImage.add(R.drawable.gram2);
@@ -70,7 +100,7 @@ public class RentalActivity extends AppCompatActivity {
 
         } else if (rentalObject.equals(Const.battery)) {
 
-            Log.i("DEBUG_CODE","배터리");
+            Log.i("DEBUG_CODE", "배터리");
 
             //보조배터리
 
@@ -81,7 +111,7 @@ public class RentalActivity extends AppCompatActivity {
 
         } else if (rentalObject.equals(Const.calculator)) {
 
-            Log.i("DEBUG_CODE","배터리");
+            Log.i("DEBUG_CODE", "계산기");
 
             //공학용계산기
 
@@ -90,7 +120,7 @@ public class RentalActivity extends AppCompatActivity {
             listImage.add(R.drawable.calculator3);
         }
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < listImage.size(); i++) {
 
             ImageFragment imageFragment = new ImageFragment();
             Bundle bundle = new Bundle();
@@ -113,12 +143,14 @@ public class RentalActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
     }
 
-    void getRentalObject() {
+    Rent getRentalObject() {
 
         //대여 물품 분류 -> 대여 물품 정보 표시
 
         Intent intent = getIntent();
         rentalObject = intent.getStringExtra("Object");
+
+        Rent rent = null;
 
 
         if (rentalObject.equals(notebook)) {
@@ -126,8 +158,10 @@ public class RentalActivity extends AppCompatActivity {
 
             //노트북
             textObject.setText(rentalObject);
-            Notebook notebook = new Notebook();
-            textObjectInfo.setText(notebook.modelInfo);
+            rent = new Notebook();
+            ((Notebook) rent).setValue();
+            textObjectInfo.setText(rent.modelInfo);
+
 
         } else if (rentalObject.equals(Const.battery)) {
 
@@ -135,8 +169,10 @@ public class RentalActivity extends AppCompatActivity {
 
             //노트북
             textObject.setText(rentalObject);
-            Battery battery = new Battery();
-            textObjectInfo.setText(battery.modelInfo);
+            rent = new Battery();
+            ((Battery) rent).setValue();
+            textObjectInfo.setText(rent.modelInfo);
+
 
         } else if (rentalObject.equals(Const.calculator)) {
 
@@ -144,11 +180,13 @@ public class RentalActivity extends AppCompatActivity {
 
             //노트북
             textObject.setText(rentalObject);
-            Calculator calculator = new Calculator();
-            textObjectInfo.setText(calculator.modelInfo);
+            rent = new Calculator();
+            ((Calculator) rent).setValue();
+            textObjectInfo.setText(rent.modelInfo);
 
         }
 
+        return rent;
     }
 
 
