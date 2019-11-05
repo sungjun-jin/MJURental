@@ -101,36 +101,33 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signinProcess(String email, String password) {
 
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
 
-                if (task.isSuccessful()) {
+            if (task.isSuccessful()) {
 
 
-                    currentUser = mAuth.getCurrentUser(); //sign-in된 user의 데이터가 들어감
+                currentUser = mAuth.getCurrentUser(); //sign-in된 user의 데이터가 들어감
 
-                    if (currentUser != null) {
+                if (currentUser != null) {
 
-                        // 로그인 성공 시
+                    // 로그인 성공 시
 
-                        Toast.makeText(LoginActivity.this, "로그인 되었습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "로그인 되었습니다!", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
 
-                        //1. 이후 액티비티를 호출
-                        finish();
-
-                    }
-
-                } else {
-
-                    Toast.makeText(LoginActivity.this, "Email또는 Password가 잘못되었습니다.", Toast.LENGTH_SHORT).show();
+                    //1. 이후 액티비티를 호출
+                    finish();
 
                 }
 
+            } else {
+
+                Toast.makeText(LoginActivity.this, "Email또는 Password가 잘못되었습니다.", Toast.LENGTH_SHORT).show();
+
             }
+
         });
 
 

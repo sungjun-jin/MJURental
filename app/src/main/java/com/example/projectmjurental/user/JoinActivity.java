@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectmjurental.R;
+import com.example.projectmjurental.data.Const;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class JoinActivity extends AppCompatActivity {
 
-    public static final String FB_REFER = "user"; //파이어베이스 레퍼런스 상수정의
+
 
     private EditText join_id; // 학번
     private EditText join_passwd; // 비밀번호
@@ -60,7 +61,7 @@ public class JoinActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance(); //파이어베이스 커넥션 설정
 
         database = FirebaseDatabase.getInstance();
-        userRef = database.getReference(FB_REFER);
+        userRef = database.getReference(Const.FB_REFER);
 
 
         // 비밀번호 일치 검사

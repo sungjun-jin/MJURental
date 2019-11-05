@@ -12,7 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.projectmjurental.adapter.CustomAdapter;
+import com.example.projectmjurental.data.Const;
 import com.example.projectmjurental.data.Rent;
 import com.example.projectmjurental.user.User;
 import com.google.android.material.navigation.NavigationView;
@@ -25,15 +29,21 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.tensorflow.demo.DetectorActivity;
 
-import static com.example.projectmjurental.user.JoinActivity.FB_REFER;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth; //파이어베이스 연결
     FirebaseDatabase database; //파이어베이스 데이터베이스
-    DatabaseReference userRef; //레퍼런스
+    DatabaseReference userRef; //사용자 레퍼런스
+
+    DatabaseReference rentRef; //대여 레퍼런스
 
     User currentUser; //현재 사용자
+
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -43,14 +53,22 @@ public class MainActivity extends AppCompatActivity {
     //YOLO 버튼
     Button btnYOLO;
 
+    Rent rent = null; //현재 대여하고 있는 장비
+    List<Rent> rentData = new ArrayList<>(); //사용자의 대여이력을 담는 리스트
+
+    RecyclerView recyclerView;
+    CustomAdapter customAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         init();
         getUserInfo();
+        getRentData();
         navigationListener();
 
         btnQR.setOnClickListener(view -> {
@@ -65,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        showRentInfo();
+        getRentInfo();
     }
 
     private void init() {
@@ -73,27 +91,28 @@ public class MainActivity extends AppCompatActivity {
         //파이베이스 커넥션을 통해 DB, 로그인한 회원 정보를 가져온다
         mAuth = FirebaseAuth.getInstance(); //파이어베이스 커넥션 설정
         database = FirebaseDatabase.getInstance();
-        userRef = database.getReference(FB_REFER);
+        userRef = database.getReference(Const.FB_REFER);
+        rentRef = database.getReference(Const.RENT_REFER);
 
         //DrawerLayout 연결
         drawerLayout = findViewById(R.id.drawerLayout);
-
         //NavigationView 연결
         navigationView = findViewById(R.id.navigationView);
 
         //버튼 연결
         btnQR = findViewById(R.id.btnQR);
         btnYOLO = findViewById(R.id.btnYOLO);
+
+        //RecyclerView 연결, 커스텀 어답터 연결, 데이터 세팅
+        recyclerView = findViewById(R.id.recyclerView);
+
     }
 
     public void getUserInfo() {
 
         //현재 로그인한 회원 정보를 가져오는 메소드
-        Log.i("DEBUG_CODE", "-----------------------회원 정보-----------------------");
-        Log.i("DEBUG_CODE", "회원 이메일 : " + mAuth.getCurrentUser().getEmail());
 
         //현재 로그인한 회원의 이메일을 가져온다
-
         String email;
         email = mAuth.getCurrentUser().getEmail();
 
@@ -110,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                     if (user.email.equals(email)) {
 
                         currentUser = user;
-
 
                         //로그인이 성공하면 메인엑테비티에 navigationview header에 사용자에 대한 정보를 표시
                         TextView textName = findViewById(R.id.textName);
@@ -195,24 +213,96 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void showRentInfo() {
+    public void getRentInfo() {
 
-        //대여한 물품의 정보를 가져옴
+        //1.대여한 물품의 정보를 가져옴 (이전 RentalActivity에서)
+
+        //2.대여가 확정된 경우 대여한 물품의 데이터를 세팅
 
         Intent intent = getIntent();
 
-
+        //RentalActivity에서 넘어온 Rent객체를 받는다
         if (intent.getSerializableExtra("Rent") != null) {
 
-            Rent rent = (Rent) intent.getSerializableExtra("Rent");
+            rent = (Rent) intent.getSerializableExtra("Rent");
 
-            //로그 테스트
-            Log.i("DEBUG_CODE", "메인 액티비티 : " + rent.getModelName());
-            Log.i("DEBUG_CODE", "메인 액티비티 : " + rent.getModelInfo());
-            Log.i("DEBUG_CODE", "메인 액티비티 : " + rent.getDeposit() + "");
-            Log.i("DEBUG_CODE", "메인 액티비티 : " + rent.available + "");
-            //로그 테스트
+            if (rent.renting) {
+
+                //이미 대여중이므로 대여 가 불가능, 토스트 메세지로 에러 처리
+                Toast.makeText(getApplicationContext(), "이미 대여중입니다.", Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                rent(); //대여 시작
+
+                //정상적인 대여 토스트 메세지 출력
+                Toast.makeText(getApplicationContext(), rent.object + " 대여가 시작되었습니다.", Toast.LENGTH_SHORT).show();
+
+
+            }
         }
+    }
+
+    public void getRentData() {
+
+//      사용자의 대여 이력을 가져오는 메소드
+
+
+        rentRef.addValueEventListener(new ValueEventListener() {
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                rentData.clear(); //리스트 초기화
+
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                    Rent rent;
+                    rent = child.getValue(Rent.class);
+
+                    if (rent.email.equals(mAuth.getCurrentUser().getEmail())) {
+
+                        //현재 사용자와 렌트 이력들 중의 대여 사용자 이메일이 일치하면
+                        rentData.add(rent);
+                    }
+                }
+
+                //RecyclerView 설정
+                customAdapter = new CustomAdapter(rentData);
+                recyclerView.setAdapter(customAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                Log.d("DEBUG_CODE", "대여정보 가져오기 실패");
+                Toast.makeText(getApplicationContext(), "대여정보를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    private void rent() {
+
+        //본격적으로 대여를 시작하는 메소드
+
+        rent.email = mAuth.getCurrentUser().getEmail(); //현재 로그인한 사용자의 이메일
+
+        //데이터 세팅
+        //SimpleDateFormat으로 현재 시간을 년:월:일:시:분:초로 포맷 설정
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //현재 시간을 앞서 설정한 포맷으로 가져온다
+        String currentTime = sdf.format(new Date());
+        rent.startDate = currentTime; //현재 시간 삽입
+        rent.renting = true; //현재 대여할 물품의 대여 여부상태를 "대여 중" 으로 바꿔준다
+
+        //파이어베이스에 대여키로 대여 정보 삽입
+        rent.rentKey = rentRef.push().getKey(); //대여키를 입력받는다
+        rentRef.child(rent.rentKey).setValue(rent);
 
 
     }

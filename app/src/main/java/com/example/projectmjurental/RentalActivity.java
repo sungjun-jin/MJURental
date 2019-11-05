@@ -3,7 +3,6 @@ package com.example.projectmjurental;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -15,12 +14,12 @@ import com.example.projectmjurental.data.Calculator;
 import com.example.projectmjurental.data.Const;
 import com.example.projectmjurental.data.Notebook;
 import com.example.projectmjurental.data.Rent;
-import com.example.projectmjurental.fragment.FragmentAdapter;
+import com.example.projectmjurental.adapter.FragmentAdapter;
 import com.example.projectmjurental.fragment.ImageFragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-import static com.example.projectmjurental.data.Const.notebook;
 
 public class RentalActivity extends AppCompatActivity {
 
@@ -52,13 +51,6 @@ public class RentalActivity extends AppCompatActivity {
         rent = getRentalObject();
         setImage();
 
-        //로그 테스트
-        Log.i("DEBUG_CODE", rent.modelName);
-        Log.i("DEBUG_CODE", rent.modelInfo);
-        Log.i("DEBUG_CODE", rent.deposit + "");
-        Log.i("DEBUG_CODE", rent.available + "");
-        //로그 테스트
-
         btnRent.setOnClickListener(view -> {
 
             //대여 버튼 누를 시
@@ -66,7 +58,7 @@ public class RentalActivity extends AppCompatActivity {
             //보증금 조건 검사 후, 물품의 대여 가능 여부 후 실행
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("Rent",rent);
+            intent.putExtra("Rent", rent);
             startActivity(intent);
             finish();
 
@@ -90,9 +82,8 @@ public class RentalActivity extends AppCompatActivity {
 
         viewPager.setAdapter(fragmentAdapter);
 
-        if (rentalObject.equals(notebook)) {
+        if (rentalObject.equals(Const.notebook)) {
 
-            Log.i("DEBUG_CODE", "노트북");
 
             listImage.add(R.drawable.gram1);
             listImage.add(R.drawable.gram2);
@@ -100,7 +91,6 @@ public class RentalActivity extends AppCompatActivity {
 
         } else if (rentalObject.equals(Const.battery)) {
 
-            Log.i("DEBUG_CODE", "배터리");
 
             //보조배터리
 
@@ -111,7 +101,6 @@ public class RentalActivity extends AppCompatActivity {
 
         } else if (rentalObject.equals(Const.calculator)) {
 
-            Log.i("DEBUG_CODE", "계산기");
 
             //공학용계산기
 
@@ -150,39 +139,43 @@ public class RentalActivity extends AppCompatActivity {
         Intent intent = getIntent();
         rentalObject = intent.getStringExtra("Object");
 
-        Rent rent = null;
-
-
-        if (rentalObject.equals(notebook)) {
-
+        if (rentalObject.equals(Const.notebook)) {
 
             //노트북
-            textObject.setText(rentalObject);
-            rent = new Notebook();
-            ((Notebook) rent).setValue();
-            textObjectInfo.setText(rent.modelInfo);
+
+            textObject.setText(rentalObject); //항목명에 데이터 세팅
+            rent = new Notebook(); //노트북 객체 생성
+
+            ((Notebook) rent).setValue(); //노트북의 보증금, 정보, 모델명 세팅
+            rent.object = Const.notebook; // Rent객체이름에 notebook 세팅
+            textObjectInfo.setText(rent.modelInfo); //액티비티 항목 정보 세팅
+
 
 
         } else if (rentalObject.equals(Const.battery)) {
 
             //보조배터리
 
-            //노트북
             textObject.setText(rentalObject);
             rent = new Battery();
+
             ((Battery) rent).setValue();
+            rent.object = Const.battery;
             textObjectInfo.setText(rent.modelInfo);
+
 
 
         } else if (rentalObject.equals(Const.calculator)) {
 
             //공학용계산기
 
-            //노트북
+
             textObject.setText(rentalObject);
             rent = new Calculator();
             ((Calculator) rent).setValue();
+            rent.object = Const.calculator;
             textObjectInfo.setText(rent.modelInfo);
+
 
         }
 

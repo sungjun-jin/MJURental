@@ -1,8 +1,10 @@
-package com.example.projectmjurental.fragment;
+package com.example.projectmjurental.adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.example.projectmjurental.R;
 
 import java.util.ArrayList;
 
@@ -14,6 +16,7 @@ public class FragmentAdapter extends FragmentPagerAdapter {
 
         //필수 생성자
         super(fm);
+
     }
 
     @Override
