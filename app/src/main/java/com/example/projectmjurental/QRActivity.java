@@ -45,23 +45,21 @@ public class QRActivity extends AppCompatActivity {
             // qrcode 가 없으면
             if (result.getContents() == null) {
                 Toast.makeText(QRActivity.this, "취소!", Toast.LENGTH_SHORT).show();
+                finish();
+
             } else {
                 // qrcode 결과가 있으면
                 Toast.makeText(QRActivity.this, "스캔완료!", Toast.LENGTH_SHORT);
                 try {
                     // data를 json으로 반환
                     JSONObject object = new JSONObject(result.getContents());
-
-
+                    
 
                 } catch (JSONException e) {
                     e.printStackTrace();
 
                     //대여 물품의 정보를 입력받는다
                     rentalObject = result.getContents();
-
-                    Log.d("DEBUG_CODE", "대여물품 : " + rentalObject);
-
 
                     Intent intent = new Intent(this.getApplicationContext(),RentalActivity.class);
                     intent.putExtra("Object",rentalObject);

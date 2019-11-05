@@ -1,11 +1,13 @@
 package com.example.projectmjurental;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -16,6 +18,7 @@ import com.example.projectmjurental.data.Notebook;
 import com.example.projectmjurental.data.Rent;
 import com.example.projectmjurental.adapter.FragmentAdapter;
 import com.example.projectmjurental.fragment.ImageFragment;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,7 +58,7 @@ public class RentalActivity extends AppCompatActivity {
 
             //대여 버튼 누를 시
 
-            //보증금 조건 검사 후, 물품의 대여 가능 여부 후 실행
+//            보증금 조건 검사 후, 물품의 대여 가능 여부 후 실행
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra("Rent", rent);
@@ -151,7 +154,6 @@ public class RentalActivity extends AppCompatActivity {
             textObjectInfo.setText(rent.modelInfo); //액티비티 항목 정보 세팅
 
 
-
         } else if (rentalObject.equals(Const.battery)) {
 
             //보조배터리
@@ -162,7 +164,6 @@ public class RentalActivity extends AppCompatActivity {
             ((Battery) rent).setValue();
             rent.object = Const.battery;
             textObjectInfo.setText(rent.modelInfo);
-
 
 
         } else if (rentalObject.equals(Const.calculator)) {
@@ -181,6 +182,5 @@ public class RentalActivity extends AppCompatActivity {
 
         return rent;
     }
-
 
 }

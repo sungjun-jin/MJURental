@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         init();
         getUserInfo();
         getRentData();
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), QRActivity.class);
             startActivity(intent);
+
         });
 
         btnYOLO.setOnClickListener(view -> {
@@ -132,13 +132,13 @@ public class MainActivity extends AppCompatActivity {
 
                         //로그인이 성공하면 메인엑테비티에 navigationview header에 사용자에 대한 정보를 표시
                         TextView textName = findViewById(R.id.textName);
-                        textName.setText(user.name);
+                        textName.setText(currentUser.name);
 
                         TextView textDept = findViewById(R.id.textDept);
-                        textDept.setText(user.dept);
+                        textDept.setText(currentUser.dept);
 
                         TextView textNum = findViewById(R.id.textNum);
-                        textNum.setText(user.num);
+                        textNum.setText(currentUser.num);
 
                     }
                 }
@@ -294,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
 
         //데이터 세팅
         //SimpleDateFormat으로 현재 시간을 년:월:일:시:분:초로 포맷 설정
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("    yyyy-MM-dd HH:mm:ss");
         //현재 시간을 앞서 설정한 포맷으로 가져온다
         String currentTime = sdf.format(new Date());
         rent.startDate = currentTime; //현재 시간 삽입
