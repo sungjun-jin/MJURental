@@ -21,6 +21,7 @@ import com.example.projectmjurental.data.Rent;
 import com.example.projectmjurental.user.User;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,11 +40,10 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth mAuth; //파이어베이스 연결
     FirebaseDatabase database; //파이어베이스 데이터베이스
     DatabaseReference userRef; //사용자 레퍼런스
-
     DatabaseReference rentRef; //대여 레퍼런스
+    FirebaseUser currentUser;
 
-    User currentUser; //현재 사용자
-
+    User loginUser; //현재 사용자
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), QRActivity.class);
             startActivity(intent);
+            finish();
+
 
         });
 
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         userRef = database.getReference(Const.FB_REFER);
         rentRef = database.getReference(Const.RENT_REFER);
+        currentUser = mAuth.getCurrentUser();
 
         //DrawerLayout 연결
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -106,44 +109,39 @@ public class MainActivity extends AppCompatActivity {
         //RecyclerView 연결, 커스텀 어답터 연결, 데이터 세팅
         recyclerView = findViewById(R.id.recyclerView);
 
+
     }
 
     public void getUserInfo() {
 
-        //현재 로그인한 회원 정보를 가져오는 메소드
-
-        //현재 로그인한 회원의 이메일을 가져온다
-        String email;
-        email = mAuth.getCurrentUser().getEmail();
+        //현재 로그인한 회원 정보를 가져와 navigation header에 띄우는 메소드
 
         userRef.addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                //오류
+
+                Log.d("DEBUG_CODE", currentUser.getEmail());
+
+
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
 
                     User user;
                     user = child.getValue(User.class);
 
-                    if (user.email.equals(email)) {
+                    if (user.email.equals(currentUser.getEmail())) {
 
-                        currentUser = user;
+                        loginUser = user;
+                        Log.d("DEBUG_CODE", "user email : " + loginUser.email);
+                        Log.d("DEBUG_CODE", "user dept : " + loginUser.dept);
+                        Log.d("DEBUG_CODE", "user name : " + loginUser.name);
+                        Log.d("DEBUG_CODE", "user num : " + loginUser.num);
 
                         //로그인이 성공하면 메인엑테비티에 navigationview header에 사용자에 대한 정보를 표시
-                        TextView textName = findViewById(R.id.textName);
-                        textName.setText(currentUser.name);
-
-                        TextView textDept = findViewById(R.id.textDept);
-                        textDept.setText(currentUser.dept);
-
-                        TextView textNum = findViewById(R.id.textNum);
-                        textNum.setText(currentUser.num);
-
                     }
                 }
-
-
             }
 
             @Override

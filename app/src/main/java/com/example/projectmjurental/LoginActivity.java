@@ -97,6 +97,15 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = mAuth.getCurrentUser();
 
+        if(currentUser != null) {
+
+            //이미 로그인이 되어있으면 MainActivity로 넘어간다
+
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     private void signinProcess(String email, String password) {

@@ -45,6 +45,8 @@ public class QRActivity extends AppCompatActivity {
             // qrcode 가 없으면
             if (result.getContents() == null) {
                 Toast.makeText(QRActivity.this, "취소!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this,MainActivity.class);
+                startActivity(intent);
                 finish();
 
             } else {
@@ -53,7 +55,7 @@ public class QRActivity extends AppCompatActivity {
                 try {
                     // data를 json으로 반환
                     JSONObject object = new JSONObject(result.getContents());
-                    
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();

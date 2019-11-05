@@ -18,10 +18,9 @@ import com.example.projectmjurental.data.Notebook;
 import com.example.projectmjurental.data.Rent;
 import com.example.projectmjurental.adapter.FragmentAdapter;
 import com.example.projectmjurental.fragment.ImageFragment;
-import com.google.android.material.snackbar.Snackbar;
+
 
 import java.util.ArrayList;
-import java.util.Date;
 
 
 public class RentalActivity extends AppCompatActivity {
@@ -56,14 +55,13 @@ public class RentalActivity extends AppCompatActivity {
 
         btnRent.setOnClickListener(view -> {
 
-            //대여 버튼 누를 시
+//          대여 버튼 누를 시
 
-//            보증금 조건 검사 후, 물품의 대여 가능 여부 후 실행
+//          보증금 조건 검사 후, 물품의 대여 가능 여부 후 실행
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("Rent", rent);
-            startActivity(intent);
-            finish();
+            showRentDialog();
+
+
 
 
         });
@@ -183,4 +181,37 @@ public class RentalActivity extends AppCompatActivity {
         return rent;
     }
 
+    private void showRentDialog() {
+
+        //대여 안내 Dialog 메세지 띄우기
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("대여안내").setMessage(rentalObject + "(을)를 대여하시겠습니까?");
+        builder.setPositiveButton("네", (dialogInterface, i) -> {
+
+            //대여 시작, MainActivity로 현재 대여할 물품의 정보를 intent로 넘기고 이동
+
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra("Rent", rent);
+            startActivity(intent);
+            finish();
+
+        });
+
+        builder.setNegativeButton("아니오", (dialogInterface, i) -> {
+
+
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //뒤로가기를 누르면 MainActivity로 간다
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

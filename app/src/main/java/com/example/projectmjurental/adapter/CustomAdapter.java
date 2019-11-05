@@ -24,7 +24,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
 
     public CustomAdapter(List<Rent> data) {
 
-        Log.i("DEBUG_CODE", "custom adapter 생성자");
 
         //생성자로 데이터를 가져온다
         this.data = data;
@@ -50,17 +49,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
 
         //이미지 뷰 세팅
 
-        if(rent.object.equals(Const.notebook)) {
+        if (rent.object.equals(Const.notebook)) {
 
             //노트북
             holder.imageItem.setImageResource(R.drawable.icon_notebook); //리스트의 이미지뷰를 노트북 아이콘으로 변환
 
-        } else if(rent.object.equals(Const.battery)) {
+        } else if (rent.object.equals(Const.battery)) {
 
             //배터리
             holder.imageItem.setImageResource(R.drawable.icon_battery); //리스트의 이미지뷰를 배터리 아이콘으로 변환
 
-        } else if(rent.object.equals(Const.calculator)) {
+        } else if (rent.object.equals(Const.calculator)) {
 
             //계산기
             holder.imageItem.setImageResource(R.drawable.icon_calculator); //리스트의 이미지뷰를 계산기 아이콘으로 변환
@@ -69,7 +68,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
         //이미지 뷰 세팅
 
         holder.textDate.setText(rent.startDate);
-
 
 
     }
