@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnQR;
     //YOLO 버튼
     Button btnYOLO;
+    //DrawerLayout버튼
+    ImageButton btnDrawer;
 
     Rent rent = null; //현재 대여하고 있는 장비
     List<Rent> rentData = new ArrayList<>(); //사용자의 대여이력을 담는 리스트
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         getRentData();
         navigationListener();
 
+        //버튼 리스너
         btnQR.setOnClickListener(view -> {
 
             Intent intent = new Intent(getApplicationContext(), QRActivity.class);
@@ -78,11 +83,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
-
         btnYOLO.setOnClickListener(view -> {
 
             Intent intent = new Intent(getApplicationContext(), DetectorActivity.class);
             startActivity(intent);
+        });
+        btnDrawer.setOnClickListener(view -> {
+
+            drawerLayout.openDrawer(navigationView);
+
         });
 
         getRentInfo();
@@ -105,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         //버튼 연결
         btnQR = findViewById(R.id.btnQR);
         btnYOLO = findViewById(R.id.btnYOLO);
+        btnDrawer = findViewById(R.id.btnDrawer);
 
         //RecyclerView 연결, 커스텀 어답터 연결, 데이터 세팅
         recyclerView = findViewById(R.id.recyclerView);
@@ -171,16 +181,21 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.setting:
 
                     //고장신고
-                    Toast.makeText(getApplicationContext(), "고장신고 버튼", Toast.LENGTH_SHORT).show();
+
+                    Intent rentalIntent = new Intent(getApplicationContext(),ReportActivity.class);
+                    startActivity(rentalIntent);
                     break;
 
                 case R.id.logout:
 
                     //로그아웃
+
                     //현재 로그인한 회원은 로그아웃
                     mAuth.signOut();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
+
+                    //로그인 액티비티로 이동
+                    Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(loginIntent);
                     finish();
                     break;
             }

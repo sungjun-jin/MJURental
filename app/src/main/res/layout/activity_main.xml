@@ -71,6 +71,15 @@
             app:layout_constraintTop_toTopOf="@+id/toolbar"
             tools:listitem="@layout/recycler_item" />
 
+        <ImageButton
+            android:id="@+id/btnDrawer"
+            android:layout_width="59dp"
+            android:layout_height="52dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_hamburger" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

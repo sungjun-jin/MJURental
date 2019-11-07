@@ -1,9 +1,8 @@
 package com.example.projectmjurental;
 
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -60,8 +59,6 @@ public class RentalActivity extends AppCompatActivity {
 //          보증금 조건 검사 후, 물품의 대여 가능 여부 후 실행
 
             showRentDialog();
-
-
 
 
         });
@@ -210,7 +207,7 @@ public class RentalActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //뒤로가기를 누르면 MainActivity로 간다
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
