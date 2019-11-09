@@ -1,5 +1,7 @@
 package com.example.projectmjurental.adapter;
 
+
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,11 @@ import com.example.projectmjurental.R;
 import com.example.projectmjurental.data.Const;
 import com.example.projectmjurental.data.Rent;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
@@ -38,6 +44,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
         return new Holder(view);
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
@@ -70,7 +77,70 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
         holder.textDate.setText(rent.startDate);
 
 
+        //대여 여부 세팅
+
+        if (rent.renting) {
+
+            holder.textRent.setText("대여 중");
+            holder.textRent.setTextColor(Color.parseColor("#26F736"));
+
+            //대여 중일 때 때 사용 시간을 공백("")으로 표시한다
+            holder.textRentTime.setText("");
+
+        } else {
+
+            holder.textRent.setText("반납 완료");
+            holder.textRent.setTextColor(Color.parseColor("#EC3636"));
+
+        }
+
+        //대여 여부 세팅
+
+        //사용 시간 세팅
+        holder.textRentTime.setText(getRentTime(rent.startDate));
+
+
+
     }
+
+    private String getRentTime(String startTime) {
+
+        String result = "";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("    yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+
+
+        Date curDate = new Date();
+
+        try {
+
+            Date time = sdf.parse(startTime);
+
+            Log.i("DEBUG_CODE", "시작 시간 : " + time);
+
+            long cureDateTime = curDate.getTime();
+            long reqDateTime = time.getTime();
+            long diff = cureDateTime - reqDateTime;
+
+            long hour = diff / 3600000;
+            long min = (diff % 3600000) / 60000;
+
+            result = hour + "시간\n" + min + "분";
+
+
+        } catch (ParseException e) {
+
+            Log.d("DEBUG_CODE", "getRentTime 에러 : " + e.getMessage());
+        }
+
+
+        //사용 시간을 구하는 메소드
+
+
+        return result;
+
+    }
+
 
     @Override
     public int getItemCount() {

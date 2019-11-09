@@ -3,4 +3,6 @@
     <color name="colorPrimary">#33C7FF</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="renting">#26F736</color>
+    <color name="returned">#EC3636</color>
 </resources>

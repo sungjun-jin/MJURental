@@ -1,4 +1,13 @@
 <resources>
-    <string name="app_name">ProjectMJURental</string>
+    <string name="app_name">MJURental</string>
     <string name="kakao_app_key">3bda738bb83b73660b06d25fdbe7b3cf</string>
+    <string name="signup">회원가입</string>
+    <string name="signin">로그인</string>
+    <string name="email">이메일</string>
+    <string name="password">패스워드</string>
+    <string name="scan_qr_code">QR 코드 스캔하기</string>
+    <string name="report_step1">step1. QR 스캔</string>
+    <string name="report_step2">step2. 고장 내용 입력</string>
+    <string name="hint_report_content">고장내용 입력하기</string>
+    <string name="report">신고하기</string>
 </resources>

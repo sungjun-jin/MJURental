@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     //YOLO 버튼
     Button btnYOLO;
     //DrawerLayout버튼
-    ImageButton btnDrawer;
+    Button btnDrawer;
 
     Rent rent = null; //현재 대여하고 있는 장비
     List<Rent> rentData = new ArrayList<>(); //사용자의 대여이력을 담는 리스트
@@ -167,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void navigationListener() {
+
+        //Navigation Menu Click Listener
 
         navigationView.setNavigationItemSelectedListener(menuItem -> {
 
@@ -285,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
                 customAdapter = new CustomAdapter(rentData);
                 recyclerView.setAdapter(customAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                customAdapter.notifyDataSetChanged();
 
             }
 
@@ -307,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
 
         //데이터 세팅
         //SimpleDateFormat으로 현재 시간을 년:월:일:시:분:초로 포맷 설정
-        SimpleDateFormat sdf = new SimpleDateFormat("    yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("    yyyy-MM-dd HH:mm:ss", Locale.KOREA);
         //현재 시간을 앞서 설정한 포맷으로 가져온다
         String currentTime = sdf.format(new Date());
         rent.startDate = currentTime; //현재 시간 삽입

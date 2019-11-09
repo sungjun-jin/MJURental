@@ -50,6 +50,7 @@ public class QRActivity extends AppCompatActivity {
                 finish();
 
             } else {
+
                 // qrcode 결과가 있으면
                 Toast.makeText(QRActivity.this, "스캔완료!", Toast.LENGTH_SHORT);
                 try {
@@ -58,11 +59,14 @@ public class QRActivity extends AppCompatActivity {
 
 
                 } catch (JSONException e) {
+
                     e.printStackTrace();
 
                     //대여 물품의 정보를 입력받는다
                     rentalObject = result.getContents();
 
+
+                    Log.i("DEBUG_CODE","rentalobject");
                     Intent intent = new Intent(this.getApplicationContext(),RentalActivity.class);
                     intent.putExtra("Object",rentalObject);
                     startActivity(intent); //대여 액티비티로 대여물품의 정보를 넘겨주고 이동
@@ -70,6 +74,10 @@ public class QRActivity extends AppCompatActivity {
 
                 }
             }
+
+
+
+
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }

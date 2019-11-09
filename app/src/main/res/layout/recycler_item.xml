@@ -51,7 +51,7 @@
 
     <TextView
         android:id="@+id/textRentTime"
-        android:layout_width="50dp"
+        android:layout_width="80dp"
         android:layout_height="32dp"
         android:gravity="center"
         android:text="3분"
@@ -64,9 +64,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="대여 중"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#26F736"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageItem"
         app:layout_constraintStart_toEndOf="@+id/textRentTime"

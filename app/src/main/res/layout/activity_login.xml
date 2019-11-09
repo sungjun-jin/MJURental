@@ -13,20 +13,22 @@
         android:layout_marginStart="96dp"
         android:layout_marginTop="372dp"
         android:ems="10"
-        android:hint="이메일"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/join_passwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="password"
+        android:hint="@string/password"
         android:inputType="textWebPassword"
         app:layout_constraintStart_toStartOf="@+id/join_email"
-        app:layout_constraintTop_toBottomOf="@+id/join_email" />
+        app:layout_constraintTop_toBottomOf="@+id/join_email"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/btnSignUp"
@@ -35,7 +37,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="12dp"
-        android:text="회원가입"
+        android:text="@string/signup"
         app:layout_constraintEnd_toStartOf="@+id/btnLogin"
         app:layout_constraintHorizontal_bias="0.374"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="92dp"
-        android:text="로그인"
+        android:text="@string/signin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btnSignUp" />
 
@@ -56,7 +58,7 @@
         android:layout_height="42dp"
         android:layout_marginTop="200dp"
         android:gravity="center"
-        android:text="MJU Rental"
+        android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

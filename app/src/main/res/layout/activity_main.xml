@@ -51,7 +51,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="@android:color/darker_gray"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,10 +71,11 @@
             app:layout_constraintTop_toTopOf="@+id/toolbar"
             tools:listitem="@layout/recycler_item" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btnDrawer"
             android:layout_width="59dp"
             android:layout_height="52dp"
+            android:background="@drawable/ic_action_info"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
