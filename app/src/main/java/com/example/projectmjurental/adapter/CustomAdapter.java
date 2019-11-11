@@ -96,13 +96,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
 
             holder.textRent.setText("반납 완료");
             holder.textRent.setTextColor(Color.parseColor("#EC3636"));
+            //사용 시간 세팅 -> 추후 반납함수에서 사용 예정
+            holder.textRentTime.setText(getRentTime(rent.startDate,rent.endDate));
+
 
         }
 
         //대여 여부 세팅
 
-        //사용 시간 세팅 -> 추후 반납함수에서 사용 예정
-        holder.textRentTime.setText(getRentTime(rent.startDate,new Date()));
 
 
 
@@ -121,7 +122,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
 
     }
 
-    private String getRentTime(String startTime, Date stopTime) {
+    private String getRentTime(String startTime, String endTime) {
 
         //반납 시작 시간과 종료 시간을 인수로 받는다
 
@@ -134,20 +135,22 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
         try {
 
             Date startDate = sdf.parse(startTime);
+            Date endDate = sdf.parse(endTime);
 
-            long cureDateTime = stopTime.getTime();
+            long cureDateTime = endDate.getTime();
             long reqDateTime = startDate.getTime();
             long diff = cureDateTime - reqDateTime;
 
             long hour = diff / 3600000;
             long min = (diff % 3600000) / 60000;
 
-            result = hour + "시간\n" + min + "분";
+            result = hour + "시간 " + min + "분";
 
 
         } catch (ParseException e) {
 
             Log.d("DEBUG_CODE", "getRentTime 에러 : " + e.getMessage());
+
         }
 
 

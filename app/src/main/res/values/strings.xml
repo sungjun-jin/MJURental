@@ -5,7 +5,9 @@
     <string name="signup">회원가입</string>
     <string name="signin">로그인</string>
     <string name="email">이메일</string>
-    <string name="password">패스워드</string>
+    <string name="password">패스워드</string>'
+
+    <string name="main_time">사용시간</string>
 
 
     <string name="scan_qr_code">QR 코드 스캔하기</string>

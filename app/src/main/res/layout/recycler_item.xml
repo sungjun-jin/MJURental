@@ -32,7 +32,6 @@
         android:layout_width="0dp"
         android:layout_height="28dp"
         android:gravity="start"
-        android:text="2019-10-30 10:33"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/imageItem"
@@ -44,7 +43,7 @@
         android:layout_width="70dp"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="사용시간"
+        android:text="@string/main_time"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textDate" />
@@ -54,7 +53,7 @@
         android:layout_width="80dp"
         android:layout_height="32dp"
         android:gravity="center"
-        android:text="3분"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textDate" />

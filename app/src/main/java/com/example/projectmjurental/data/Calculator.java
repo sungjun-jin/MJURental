@@ -14,7 +14,21 @@ public class Calculator extends Rent {
 
         modelName = "FX-30ES PLUS"; //모델명
         deposit = 10000; //보증금
-        modelInfo = "모델명 : " + this.modelName + "\n" + "보증금 : " + this.deposit + " 원\n" + "대여중 : " + renting + "\n";
+
+        if (renting) {
+
+            //대여 중
+
+            modelInfo = "모델명 : " + this.modelName + "\n" + "보증금 : " + this.deposit + " 원\n" + "대여 가능 여부 : 불가능\n";
+
+        } else {
+
+            //대여 가능
+
+            modelInfo = "모델명 : " + this.modelName + "\n" + "보증금 : " + this.deposit + " 원\n" + "대여 가능 여부 : 가능\n";
+
+        }
+
 
     }
 
