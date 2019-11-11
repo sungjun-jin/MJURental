@@ -1,5 +1,6 @@
 package com.example.projectmjurental;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,7 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.projectmjurental.adapter.CustomAdapter;
+import com.example.projectmjurental.data.Const;
 import com.example.projectmjurental.data.Rent;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,6 +44,9 @@ public class ReturnActivity extends AppCompatActivity {
     Rent rent = null; //현재 대여하고 있는 물품
 
     CustomAdapter customAdapter;
+
+    FirebaseDatabase database; //파이어베이스 데이터베이스
+    DatabaseReference rentRef; //대여 레퍼런스
 
     int index = 0; //인덱스
 
@@ -66,6 +76,8 @@ public class ReturnActivity extends AppCompatActivity {
 
         customAdapter = MainActivity.customAdapter;
 
+        database = FirebaseDatabase.getInstance();
+        rentRef = database.getReference(Const.RENT_REFER);
 
         btnBluetooth.setOnClickListener(view -> {
 
@@ -83,13 +95,20 @@ public class ReturnActivity extends AppCompatActivity {
             //SimpleDateFormat으로 현재 시간을 년:월:일:시:분:초로 포맷 설정
             SimpleDateFormat sdf = new SimpleDateFormat("    yyyy-MM-dd HH:mm:ss", Locale.KOREA);
 
+
+            //파이어 베이스에서 수정을 해줘야 즉각 반영된다
+
             //현재 시간을 앞서 설정한 포맷으로 가져온다
             String endTime = sdf.format(new Date());
-            rental.endDate = endTime; //반납 시간 삽입
-
-            customAdapter.notifyDataSetChanged();
+            updateData(endTime);
             finish();
         });
+
+        if(!rent.renting) {
+
+            btnReturn.setVisibility(View.INVISIBLE);
+            btnBluetooth.setVisibility(View.INVISIBLE);
+        }
 
 
     }
@@ -138,6 +157,33 @@ public class ReturnActivity extends AppCompatActivity {
 
         textStartDate.setText(rent.startDate); //대여 시작일 표시
         textInfo.setText(info); //대여 정보 표시
+
+    }
+
+    private void updateData(String endTime) {
+
+        //파이어베이스 데이터 수정
+
+        //대여 시 발급받은 Rent Key를 활용하여 파이어베이스 데이터 접근
+
+        rentRef.child(rent.rentKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                dataSnapshot.getRef().child("renting").setValue(false); //파이어베이스의 대여 여부를 false(반납 완료)로 수정
+                dataSnapshot.getRef().child("endDate").setValue(endTime); //파이어베이스의 반납 시간(endTime)에 현재 시간을 넣어준다
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                Log.i("DEBUG_CODE",databaseError.getMessage());
+
+            }
+        });
+
+
+
 
     }
 }
