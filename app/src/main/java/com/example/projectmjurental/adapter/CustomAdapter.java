@@ -1,6 +1,7 @@
 package com.example.projectmjurental.adapter;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,10 +11,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectmjurental.R;
+import com.example.projectmjurental.ReturnActivity;
 import com.example.projectmjurental.data.Const;
 import com.example.projectmjurental.data.Rent;
 
@@ -24,17 +27,19 @@ import java.util.List;
 import java.util.Locale;
 
 
+
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
 
-    List<Rent> data;
+    public List<Rent> data;
 
     public CustomAdapter(List<Rent> data) {
 
 
         //생성자로 데이터를 가져온다
         this.data = data;
-
     }
+
+
 
     @NonNull
     @Override
@@ -96,30 +101,42 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
 
         //대여 여부 세팅
 
-        //사용 시간 세팅
-        holder.textRentTime.setText(getRentTime(rent.startDate));
+        //사용 시간 세팅 -> 추후 반납함수에서 사용 예정
+        holder.textRentTime.setText(getRentTime(rent.startDate,new Date()));
+
+
+
+        holder.btnRentInfo.setOnClickListener(view -> {
+
+            //대여 세부정보 버튼 클릭 시 -> 반납 액티비티로 이동한다 (RentalActivity)
+
+            Intent intent = new Intent(view.getContext(), ReturnActivity.class);
+            intent.putExtra("Rent", rent); //현재 대여하고 있는 물품 클래스를 넘겨준다
+            intent.putExtra("index",position); //현재 대여하고 있는  물품 클래스의 데이터 인덱스를 넘겨준다
+            view.getContext().startActivity(intent);
+
+        });
 
 
 
     }
 
-    private String getRentTime(String startTime) {
+    private String getRentTime(String startTime, Date stopTime) {
+
+        //반납 시작 시간과 종료 시간을 인수로 받는다
+
+        //startTime은 rent 클래스에 있던 String 형 변수를 가지고 Date 클래스를 이용해 Date형으로 다시 변환해준다
 
         String result = "";
 
         SimpleDateFormat sdf = new SimpleDateFormat("    yyyy-MM-dd HH:mm:ss", Locale.KOREA);
 
-
-        Date curDate = new Date();
-
         try {
 
-            Date time = sdf.parse(startTime);
+            Date startDate = sdf.parse(startTime);
 
-            Log.i("DEBUG_CODE", "시작 시간 : " + time);
-
-            long cureDateTime = curDate.getTime();
-            long reqDateTime = time.getTime();
+            long cureDateTime = stopTime.getTime();
+            long reqDateTime = startDate.getTime();
             long diff = cureDateTime - reqDateTime;
 
             long hour = diff / 3600000;
@@ -135,7 +152,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.Holder> {
 
 
         //사용 시간을 구하는 메소드
-
 
         return result;
 

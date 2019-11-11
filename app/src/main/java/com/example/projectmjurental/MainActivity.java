@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     List<Rent> rentData = new ArrayList<>(); //사용자의 대여이력을 담는 리스트
 
     RecyclerView recyclerView;
-    CustomAdapter customAdapter;
+    static CustomAdapter customAdapter;
 
 
     @Override
@@ -145,10 +145,6 @@ public class MainActivity extends AppCompatActivity {
                     if (user.email.equals(currentUser.getEmail())) {
 
                         loginUser = user;
-                        Log.d("DEBUG_CODE", "user email : " + loginUser.email);
-                        Log.d("DEBUG_CODE", "user dept : " + loginUser.dept);
-                        Log.d("DEBUG_CODE", "user name : " + loginUser.name);
-                        Log.d("DEBUG_CODE", "user num : " + loginUser.num);
 
                         //로그인이 성공하면 메인엑테비티에 navigationview header에 사용자에 대한 정보를 표시
                     }
@@ -319,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
 
         //파이어베이스에 대여키로 대여 정보 삽입
         rent.rentKey = rentRef.push().getKey(); //대여키를 입력받는다
-        rentRef.child(rent.rentKey).setValue(rent);
+        rentRef.child(rent.rentKey).setValue(rent); //데이터 삽입
 
 
     }
