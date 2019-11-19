@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.projectmjurental.data.Const;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -20,6 +21,8 @@ public class QRActivity extends AppCompatActivity {
 
     // QR CODE object
     private IntentIntegrator qrScan;
+    Intent intent;
+    String event;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,11 @@ public class QRActivity extends AppCompatActivity {
         qrScan.setPrompt("Scanning...");
         qrScan.initiateScan();
 
+        intent = getIntent();
+        event = intent.getStringExtra(Const.QR);
+
+        Log.i("DEBUG_CODE", "Event : " + event);
+
     }
 
     // Getting the scan results
@@ -45,7 +53,7 @@ public class QRActivity extends AppCompatActivity {
             // qrcode 가 없으면
             if (result.getContents() == null) {
                 Toast.makeText(QRActivity.this, "취소!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this,MainActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
 
@@ -65,17 +73,31 @@ public class QRActivity extends AppCompatActivity {
                     //대여 물품의 정보를 입력받는다
                     rentalObject = result.getContents();
 
+                    if (event.equals(Const.RENT)) {
 
-                    Log.i("DEBUG_CODE","rentalobject");
-                    Intent intent = new Intent(this.getApplicationContext(),RentalActivity.class);
-                    intent.putExtra("Object",rentalObject);
-                    startActivity(intent); //대여 액티비티로 대여물품의 정보를 넘겨주고 이동
-                    finish();
+                        //메인 액티비티로부터 QRActivity가 호출되었을 시
+                        //QR 코드로 제품 인식 후 RentalActivity로 대여 물품에 대한 정보를 보낸다.
+
+                        Intent intent = new Intent(this.getApplicationContext(), RentalActivity.class);
+                        intent.putExtra("Object", rentalObject); //대여할 물품의 이름을 String 형태로 넘겨준다
+                        startActivity(intent); //대여 액티비티로 대여물품의 정보를 넘겨주고 이동
+                        finish();
+
+                    } else if (event.equals(Const.REPORT)) {
+
+                        //고장신고 액티비티로부터 QRActivity가 호출되었을 시
+                        //QR 코드로 제품 인식 후 ReportActivity로 대여 물품에 대한 정보를 보낸다.
+
+                        Intent intent = new Intent(getApplicationContext(), ReportActivity.class);
+                        Log.i("DEBUG_CODE", "QR -> REPORT :" + rentalObject);
+                        intent.putExtra(Const.REPORT, rentalObject); //고장신고할 물품의 이름을 String 형태로 넘겨준다
+                        startActivity(intent);
+                        finish();
+                    }
+
 
                 }
             }
-
-
 
 
         } else {

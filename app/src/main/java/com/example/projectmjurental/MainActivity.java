@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase database; //파이어베이스 데이터베이스
     DatabaseReference userRef; //사용자 레퍼런스
     DatabaseReference rentRef; //대여 레퍼런스
-    FirebaseUser currentUser;
+    FirebaseUser currentUser; //현재 사용자
 
     User loginUser; //현재 사용자
 
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         btnQR.setOnClickListener(view -> {
 
             Intent intent = new Intent(getApplicationContext(), QRActivity.class);
+            intent.putExtra(Const.QR,Const.RENT);
             startActivity(intent);
             finish();
 
@@ -182,12 +183,15 @@ public class MainActivity extends AppCompatActivity {
                     //고장신고
 
                     Intent rentalIntent = new Intent(getApplicationContext(),ReportActivity.class);
+                    rentalIntent.putExtra(Const.REPORT,Const.MAIN);
                     startActivity(rentalIntent);
                     break;
 
                 case R.id.logout:
 
                     //로그아웃
+
+                    //AlerDialog 추가
 
                     //현재 로그인한 회원은 로그아웃
                     mAuth.signOut();
