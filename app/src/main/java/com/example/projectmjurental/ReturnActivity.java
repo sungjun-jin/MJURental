@@ -39,18 +39,13 @@ public class ReturnActivity extends AppCompatActivity {
      */
 
     TextView textInfo, textStartDate;
-
     TextView textReturnTitle, textReturn1, textReturn2;
-
     Button btnReturn, btnBluetooth;
-
     Rent rent = null; //현재 대여하고 있는 물품
 
     CustomAdapter customAdapter;
-
     FirebaseDatabase database; //파이어베이스 데이터베이스
     DatabaseReference rentRef; //대여 레퍼런스
-
     int index = 0; //인덱스
 
 
@@ -60,6 +55,8 @@ public class ReturnActivity extends AppCompatActivity {
         setContentView(R.layout.activity_return);
 
         init();
+
+
 
 
     }

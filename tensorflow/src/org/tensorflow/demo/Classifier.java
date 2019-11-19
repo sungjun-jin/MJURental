@@ -17,6 +17,9 @@ package org.tensorflow.demo;
 
 import android.graphics.Bitmap;
 import android.graphics.RectF;
+import android.util.Log;
+import android.widget.Toast;
+
 import java.util.List;
 
 /**
