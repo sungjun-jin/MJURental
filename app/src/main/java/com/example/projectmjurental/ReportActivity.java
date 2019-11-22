@@ -272,12 +272,14 @@ public class ReportActivity extends AppCompatActivity {
         //현재 시간을 앞서 설정한 포맷으로 가져온다
         String currentTime = sdf.format(new Date());
 
+        String msg = editReport.getText().toString();
+
         //파이어베이스와 문자 메세지로 저장될 최종 정보
         String info = "제보자 이름 : " + currentUser.getEmail() + "\n제보자 연락처 : " + editPhoneNum.getText().toString() + "\n제품명 : " + rent.object
-                + "\n모델명 : " + rent.modelName + "\n제보 시간 : " + currentTime;
+                + "\n모델명 : " + rent.modelName +  "\n사용자 메세지 :" + msg + "\n제보 시간 : " + currentTime;
 
         //Report 클래스 생성
-        Report report = new Report(currentUser.getEmail(), editPhoneNum.getText().toString(), rent.object, rent.modelInfo, info, currentTime);
+        Report report = new Report(currentUser.getEmail(), editPhoneNum.getText().toString(), rent.object, rent.modelInfo, info, currentTime,msg);
 
         String key = currentTime; //키는 제보한 날짜로 설정
         reportRef.child(key).setValue(report); //데이터 삽입
@@ -297,6 +299,9 @@ public class ReportActivity extends AppCompatActivity {
         startActivity(SMSIntent);
     }
 
+    //메세지가 바로 전송되는 메소드
+    //개통 기계 테스트
+    
 //    private void sendSMS(String info) {
 //
 //

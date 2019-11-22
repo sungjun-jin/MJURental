@@ -6,17 +6,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.projectmjurental.adapter.CustomAdapter;
 import com.example.projectmjurental.data.Const;
 import com.example.projectmjurental.data.Rent;
@@ -64,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     static CustomAdapter customAdapter;
 
+    //navigation header textview
+    TextView textHeaderName, textHeaderNum, textHeaderDept;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         btnQR.setOnClickListener(view -> {
 
             Intent intent = new Intent(getApplicationContext(), QRActivity.class);
-            intent.putExtra(Const.QR,Const.RENT);
+            intent.putExtra(Const.QR, Const.RENT);
             startActivity(intent);
             finish();
 
@@ -97,6 +104,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
         getRentInfo();
+
+        //네비게이션 헤더부분 BackGround 이미지 바꿀때 사용 (Glide 라이브러리)
+
+        final View headerView = navigationView.getHeaderView(0);
+
+        Glide.with(this).load(R.layout.main_nav_header).into(new SimpleTarget<GlideDrawable>() {
+            @Override
+            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                headerView.setBackground(resource);
+            }
+        });
+
+        textHeaderName = headerView.findViewById(R.id.textHeaderName);
+        textHeaderNum = headerView.findViewById(R.id.textHeaderNum);
+        textHeaderDept = headerView.findViewById(R.id.textHeaderDept);
+
+
     }
 
     private void init() {
@@ -148,15 +172,21 @@ public class MainActivity extends AppCompatActivity {
                         loginUser = user;
 
                         //로그인이 성공하면 메인엑테비티에 navigationview header에 사용자에 대한 정보를 표시
+
                     }
                 }
+
+                //navigation header에 사용자 이름 표시
+                textHeaderName.setText(loginUser.name);
+                textHeaderNum.setText(loginUser.num);
+                textHeaderDept.setText(loginUser.dept);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 Log.d("DEBUG_CODE", "회원정보 가져오기 실패");
-                Toast.makeText(getApplicationContext(), "회원정보를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "회원정보를 가져오는데 실패했습니다." + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -175,32 +205,51 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.account:
 
                     //회원정보
+
+                    // 1. 회원 학번, 대여 횟수, 고장신고 접수 횟수
+
                     Toast.makeText(getApplicationContext(), "계정 버튼", Toast.LENGTH_SHORT).show();
                     break;
 
-                case R.id.setting:
+                case R.id.report:
 
                     //고장신고
 
-                    Intent rentalIntent = new Intent(getApplicationContext(),ReportActivity.class);
-                    rentalIntent.putExtra(Const.REPORT,Const.MAIN);
+                    Intent rentalIntent = new Intent(getApplicationContext(), ReportActivity.class);
+                    rentalIntent.putExtra(Const.REPORT, Const.MAIN);
                     startActivity(rentalIntent);
                     break;
 
                 case R.id.logout:
 
                     //로그아웃
+                {
 
-                    //AlerDialog 추가
+                    //대여 안내 Dialog 메세지 띄우기
 
-                    //현재 로그인한 회원은 로그아웃
-                    mAuth.signOut();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("로그아웃").setMessage("로그아웃 하시겠습니까?");
+                    builder.setPositiveButton("네", (dialogInterface, i) -> {
 
-                    //로그인 액티비티로 이동
-                    Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(loginIntent);
-                    finish();
-                    break;
+                        //대여 시작, MainActivity로 현재 대여할 물품의 정보를 intent로 넘기고 이동
+
+                        //현재 로그인한 회원은 로그아웃
+                        mAuth.signOut();
+
+                        //로그인 액티비티로 이동
+                        Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(loginIntent);
+                        finish();
+                    });
+                    builder.setNegativeButton("아니오", (dialogInterface, i) -> {
+
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                break;
+
+
             }
 
             //navigationView에 아이템을 눌렀으면 drawer가 닫힌다
@@ -295,8 +344,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                Log.d("DEBUG_CODE", "대여정보 가져오기 실패");
-                Toast.makeText(getApplicationContext(), "대여정보를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "대여정보를 가져오는데 실패했습니다." + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -14,9 +14,11 @@ public class Report {
     public String modelInfo; //대여 물품 모델명
     public String reportInfo; //고장 내용
 
+    public String userMsg; //사용자의 고장접수 메세지
+
     public String reportDate; //접수 시간
 
-    public Report (String userEmail, String userPhoneNum, String modelName, String modelInfo, String reportInfo, String reportDate) {
+    public Report (String userEmail, String userPhoneNum, String modelName, String modelInfo, String reportInfo, String reportDate, String userMsg) {
 
         this.userEmail = userEmail;
         this.userPhoneNum = userPhoneNum;
@@ -24,5 +26,6 @@ public class Report {
         this.modelInfo = modelInfo;
         this.reportInfo = reportInfo;
         this.reportDate = reportDate;
+        this.userMsg = userMsg;
     }
 }
