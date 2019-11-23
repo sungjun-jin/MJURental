@@ -14,21 +14,21 @@
 
         <Button
             android:id="@+id/btnYOLO"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="46dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="56dp"
             android:layout_marginBottom="39dp"
-            android:text="YOLO"
+            android:background="@drawable/icon_camera_filled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/toolbar" />
 
         <Button
             android:id="@+id/btnQR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="56dp"
             android:layout_marginBottom="39dp"
-            android:text="QR"
+            android:background="@drawable/icon_qr_filled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -51,7 +51,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/darker_gray"
+            android:background="@color/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,13 +73,15 @@
 
         <Button
             android:id="@+id/btnDrawer"
-            android:layout_width="59dp"
-            android:layout_height="52dp"
-            android:background="@drawable/ic_action_info"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/icon_menu"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icon_hamburger" />
+            app:srcCompat="@drawable/icon_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:orientation="vertical">
+    android:layout_height="80dp"
+    android:orientation="vertical"
+    android:padding="@dimen/com_kakao_padding">
 
     <Button
         android:id="@+id/btnRentInfo"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:background="@color/colorPrimary"
         android:text=">"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold"
@@ -32,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="28dp"
         android:gravity="start"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/imageItem"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,6 +46,7 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:text="@string/main_time"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textDate" />
@@ -53,6 +56,7 @@
         android:layout_width="80dp"
         android:layout_height="32dp"
         android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView5"
@@ -63,7 +67,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageItem"
         app:layout_constraintStart_toEndOf="@+id/textRentTime"

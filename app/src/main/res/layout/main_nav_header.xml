@@ -3,28 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:orientation="vertical"
-    android:background="@color/common_google_signin_btn_text_dark_disabled">
+    android:layout_height="300dp"
+    android:background="@color/colorPrimary"
+    android:fadingEdge="horizontal"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textHeaderName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:gravity="center_vertical"
-        android:textSize="15sp"
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_profile" />
 
     <TextView
         android:id="@+id/textHeaderNum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:padding="@dimen/com_kakao_padding"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -35,12 +35,28 @@
         android:id="@+id/textHeaderDept"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:padding="@dimen/com_kakao_padding"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textHeaderNum" />
+
+    <TextView
+        android:id="@+id/textHeaderName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:padding="@dimen/com_kakao_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

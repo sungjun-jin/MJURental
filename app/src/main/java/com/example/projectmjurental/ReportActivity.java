@@ -301,7 +301,7 @@ public class ReportActivity extends AppCompatActivity {
 
     //메세지가 바로 전송되는 메소드
     //개통 기계 테스트
-    
+
 //    private void sendSMS(String info) {
 //
 //
