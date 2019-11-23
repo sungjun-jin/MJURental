@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +28,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import app.akexorcist.bluetotohspp.library.BluetoothSPP;
+import app.akexorcist.bluetotohspp.library.BluetoothState;
+import app.akexorcist.bluetotohspp.library.DeviceList;
+
+
 public class ReturnActivity extends AppCompatActivity {
 
     /*
@@ -38,7 +46,7 @@ public class ReturnActivity extends AppCompatActivity {
 
      */
 
-    TextView textInfo, textStartDate;
+    TextView textInfo, textStartDate, textBlueTooth;
     TextView textReturnTitle, textReturn1, textReturn2;
     Button btnReturn, btnBluetooth;
     Rent rent = null; //현재 대여하고 있는 물품
@@ -48,6 +56,11 @@ public class ReturnActivity extends AppCompatActivity {
     DatabaseReference rentRef; //대여 레퍼런스
     int index = 0; //인덱스
 
+    private BluetoothSPP bluetooth;
+
+    //블루투스 연결 여부를 알려주는 변수
+    private boolean isBluetooth = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,21 +68,23 @@ public class ReturnActivity extends AppCompatActivity {
         setContentView(R.layout.activity_return);
 
         init();
-
-
-
-
+        setRentalButton();
+        connectBlueTooth();
     }
 
     private void init() {
 
         //초기화 메소드
 
+        //블루투스 초기화
+        bluetooth = new BluetoothSPP(this);
+
         textInfo = findViewById(R.id.textInfo);
         textStartDate = findViewById(R.id.textStartDate);
         textReturnTitle = findViewById(R.id.textReturnTitle);
         textReturn1 = findViewById(R.id.textReturn1);
         textReturn2 = findViewById(R.id.textReturn2);
+        textBlueTooth = findViewById(R.id.textBlueTooth);
 
         btnReturn = findViewById(R.id.btnReturn);
         btnBluetooth = findViewById(R.id.btnBluetooth);
@@ -87,7 +102,12 @@ public class ReturnActivity extends AppCompatActivity {
         btnBluetooth.setOnClickListener(view -> {
 
             //블루투스 연결 버튼
-
+            if (bluetooth.getServiceState() == BluetoothState.STATE_CONNECTED) {
+                bluetooth.disconnect();
+            } else {
+                Intent intent = new Intent(getApplicationContext(), DeviceList.class);
+                startActivityForResult(intent, BluetoothState.REQUEST_CONNECT_DEVICE);
+            }
         });
 
         btnReturn.setOnClickListener(view -> {
@@ -95,6 +115,129 @@ public class ReturnActivity extends AppCompatActivity {
             returnItem();
         });
     }
+
+    //블루투스 메소드
+
+    public void onDestroy() {
+        super.onDestroy();
+        bluetooth.stopService(); //블루투스 중지
+    }
+
+    public void onStart() {
+        super.onStart();
+        if (!bluetooth.isBluetoothEnabled()) { //
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(intent, BluetoothState.REQUEST_ENABLE_BT);
+        } else {
+            if (!bluetooth.isServiceAvailable()) {
+                bluetooth.setupService();
+                bluetooth.startService(BluetoothState.DEVICE_OTHER); //DEVICE_ANDROID는 안드로이드 기기 끼리
+                setup();
+            }
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == BluetoothState.REQUEST_CONNECT_DEVICE) {
+            if (resultCode == Activity.RESULT_OK)
+                bluetooth.connect(data);
+        } else if (requestCode == BluetoothState.REQUEST_ENABLE_BT) {
+            if (resultCode == Activity.RESULT_OK) {
+                bluetooth.setupService();
+                bluetooth.startService(BluetoothState.DEVICE_OTHER);
+                setup();
+            } else {
+                Toast.makeText(getApplicationContext()
+                        , "Bluetooth was not enabled.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
+
+    private void connectBlueTooth() {
+
+        //반납 전 블루투스 연결 메소드
+
+        if (!bluetooth.isBluetoothAvailable()) {
+
+            //블루투스 사용 불가
+            Toast.makeText(getApplicationContext(), "블루투스 연결이 불가능합니다.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        bluetooth.setOnDataReceivedListener((data, message) -> {
+
+        });
+
+        bluetooth.setBluetoothConnectionListener(new BluetoothSPP.BluetoothConnectionListener() {
+            @Override
+            public void onDeviceConnected(String name, String address) {
+
+                //정상 연결
+
+                Toast.makeText(getApplicationContext(), "블루투스를 통한 위치 인증이 완료되었습니다. " + name + "\n" + address, Toast.LENGTH_SHORT).show();
+
+                //연결한 블루투스 디바이스의 이름이 CAPSTONE4일때만 반납 버튼 활성화
+                if(name.equals("CAPSTONE4"))
+                    isBluetooth = true;
+
+
+            }
+
+            @Override
+            public void onDeviceDisconnected() {
+
+                //연결 끊김
+
+                Toast.makeText(getApplicationContext(), "Connection lost", Toast.LENGTH_SHORT).show();
+                isBluetooth = false;
+
+            }
+
+            @Override
+            public void onDeviceConnectionFailed() {
+
+                //연결 실패
+
+                Toast.makeText(getApplicationContext(), "블루투스 연결에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                isBluetooth = false;
+
+            }
+        });
+
+    }
+
+    private void setRentalButton() {
+
+        //블루투스 연결 상태에 따라 버튼 상태, 안내메세지 지정
+
+        //블루투스 연결 성공 시 버튼 활성화
+
+        if (isBluetooth) {
+
+            btnReturn.setClickable(true);
+            textBlueTooth.setText("(연결성공)");
+            textBlueTooth.setTextColor(Color.parseColor("#26F736"));
+
+
+        } else {
+
+            btnReturn.setClickable(false);
+            textBlueTooth.setText("(연결실패)");
+            textBlueTooth.setTextColor(Color.parseColor("#EC3636"));
+
+
+        }
+    }
+
+
+    public void setup() {
+
+    }
+
+    //블루투스 메소드
+
+    //대여 메소드
 
     private void getRentInfo() {
 
@@ -138,7 +281,7 @@ public class ReturnActivity extends AppCompatActivity {
                 "모델명 : " + rent.modelName + "\n" +
                 "보증금 : " + rent.deposit + "원\n";
 
-        if(!rent.renting) {
+        if (!rent.renting) {
 
             //정상 반납일 경우 대여일시를 기존 정보에 더해준다
 
@@ -201,14 +344,14 @@ public class ReturnActivity extends AppCompatActivity {
                 String endTime = sdf.format(new Date());
                 updateData(endTime);
 
-                Toast.makeText(this,"반납이 완료되었습니다.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "반납이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                 finish();
 
             });
 
             builder.setNegativeButton("아니오", (dialogInterface, i) -> {
 
-                Toast.makeText(this,"반납이 취소되었습니다.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "반납이 취소되었습니다.", Toast.LENGTH_SHORT).show();
 
             });
 

@@ -25,6 +25,8 @@ public class KakaoActivity extends Activity {
     WebView webview;
     private final String APP_SCHEME = "iamportkakao://";
 
+    AndroidBridge androidBridge;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,8 @@ public class KakaoActivity extends Activity {
         settings.setJavaScriptEnabled(true);
 
         webview.loadUrl("file:///android_asset/www/kakao.html");
+        androidBridge = new AndroidBridge(webview,this);
+        webview.addJavascriptInterface(androidBridge,"Android");
     }
 
     @Override

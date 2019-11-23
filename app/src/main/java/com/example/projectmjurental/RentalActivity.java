@@ -17,6 +17,7 @@ import com.example.projectmjurental.data.Notebook;
 import com.example.projectmjurental.data.Rent;
 import com.example.projectmjurental.adapter.FragmentAdapter;
 import com.example.projectmjurental.fragment.ImageFragment;
+import com.example.projectmjurental.kakao.KakaoActivity;
 
 
 import java.util.ArrayList;
@@ -66,6 +67,8 @@ public class RentalActivity extends AppCompatActivity {
         btnDeposit.setOnClickListener(view -> {
 
             //보증금 결제 누를 시
+            Intent intent = new Intent(getApplicationContext(),KakaoActivity.class);
+            startActivityForResult(intent,102);
 
         });
     }
