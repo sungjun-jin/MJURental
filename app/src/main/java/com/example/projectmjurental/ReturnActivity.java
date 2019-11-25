@@ -62,6 +62,8 @@ public class ReturnActivity extends AppCompatActivity {
     private boolean isBluetooth = false;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,9 +179,14 @@ public class ReturnActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "블루투스를 통한 위치 인증이 완료되었습니다. " + name + "\n" + address, Toast.LENGTH_SHORT).show();
 
-                //연결한 블루투스 디바이스의 이름이 CAPSTONE4일때만 반납 버튼 활성화
-                if(name.equals("CAPSTONE4"))
+//                연결한 블루투스 디바이스의 이름이 CAPSTONE4일때만 반납 버튼 활성화
+                if(name.equals("MJURENTAL")) {
+
                     isBluetooth = true;
+                    setRentalButton();
+
+                }
+
 
 
             }
@@ -191,6 +198,7 @@ public class ReturnActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Connection lost", Toast.LENGTH_SHORT).show();
                 isBluetooth = false;
+                setRentalButton();
 
             }
 
@@ -201,6 +209,7 @@ public class ReturnActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "블루투스 연결에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                 isBluetooth = false;
+                setRentalButton();
 
             }
         });
@@ -375,6 +384,7 @@ public class ReturnActivity extends AppCompatActivity {
             textReturn1.setVisibility(View.INVISIBLE);
             textReturn2.setVisibility(View.INVISIBLE);
             textReturnTitle.setVisibility(View.INVISIBLE);
+            textBlueTooth.setVisibility(View.INVISIBLE);
 
         } else {
 

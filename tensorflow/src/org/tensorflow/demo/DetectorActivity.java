@@ -17,6 +17,7 @@
 package org.tensorflow.demo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -95,7 +96,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         TF_OD_API, MULTIBOX, YOLO;
     }
 
-    private static final DetectorMode MODE = DetectorMode.YOLO;
+    private static final DetectorMode MODE = DetectorMode.TF_OD_API;
 
     // Minimum detection confidence to track a detection.
     private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.6f;
@@ -338,11 +339,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
                                 //이미지 디텍션 코드
 
-//                                Log.i("YOLO", "DetectorActivity : " + result.getTitle());
+                                Log.i("YOLO", "DetectorActivity : " + result.getConfidence());
 
                                 if (result.getTitle().equals("laptop") && result.getConfidence() >= 0.8f) {
 
-                                    Toast.makeText(getApplicationContext(), "노트북입니다.", Toast.LENGTH_SHORT).show();
                                 }
 
                                 //이미지 디텍션 코드

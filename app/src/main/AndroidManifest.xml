@@ -13,7 +13,8 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:theme">
-        <activity android:name=".ReturnActivity"></activity>
+        <activity android:name=".DetectorActivity"/>
+        <activity android:name=".ReturnActivity"/>
         <activity android:name=".ReportActivity" />
         <activity android:name=".RentalActivity" />
         <activity android:name=".QRActivity" />
@@ -44,7 +45,8 @@
                 <!-- 로그인 액티비티 -->
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity"/>
+
     </application>
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -53,5 +55,6 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
 </manifest>
