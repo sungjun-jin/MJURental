@@ -37,6 +37,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="44dp"
         android:layout_marginEnd="12dp"
+        android:background="@color/colorPrimary"
         android:text="@string/signup"
         app:layout_constraintEnd_toStartOf="@+id/btnLogin"
         app:layout_constraintHorizontal_bias="0.374"
@@ -48,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="92dp"
+        android:background="@color/colorPrimary"
         android:text="@string/signin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btnSignUp" />
@@ -56,13 +58,23 @@
         android:id="@+id/textView"
         android:layout_width="203dp"
         android:layout_height="42dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="36dp"
         android:gravity="center"
         android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="151dp"
+        android:layout_height="125dp"
+        android:layout_marginTop="116dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_rent_2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,8 @@ public class JoinActivity extends AppCompatActivity {
     FirebaseDatabase database; //파이어베이스 데이터베이스
     DatabaseReference userRef; //레퍼런스
 
+    TextView textCheckPW;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,8 @@ public class JoinActivity extends AppCompatActivity {
         join_major = findViewById(R.id.join_major);
         join_button = findViewById(R.id.join_button);
         esc_join_button = findViewById(R.id.esc_join_button);
+
+        textCheckPW = findViewById(R.id.textCheckPW);
 
         mAuth = FirebaseAuth.getInstance(); //파이어베이스 커넥션 설정
 
@@ -78,13 +83,15 @@ public class JoinActivity extends AppCompatActivity {
                 String passwore_re = join_passwd_re.getText().toString();
 
                 if (password.equals(passwore_re)) {
-                    join_passwd.setBackgroundColor(Color.GREEN);
-                    join_passwd_re.setBackgroundColor(Color.GREEN);
-                } else {
-                    join_passwd.setBackgroundColor(Color.RED);
-                    join_passwd_re.setBackgroundColor(Color.RED);
-                }
 
+                    textCheckPW.setText("(일치)");
+                    textCheckPW.setTextColor(Color.parseColor("#26F736"));
+
+                } else {
+
+                    textCheckPW.setText("(불일치)");
+                    textCheckPW.setTextColor(Color.parseColor("#EC3636"));
+                }
             }
 
             @Override

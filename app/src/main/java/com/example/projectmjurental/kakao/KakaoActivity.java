@@ -39,7 +39,7 @@ public class KakaoActivity extends Activity {
         settings.setJavaScriptEnabled(true);
 
         webview.loadUrl("file:///android_asset/www/kakao.html");
-        androidBridge = new AndroidBridge(webview,this);
+        androidBridge = new AndroidBridge(webview,this,this);
         webview.addJavascriptInterface(androidBridge,"Android");
     }
 
@@ -58,7 +58,6 @@ public class KakaoActivity extends Activity {
         if (intent != null) {
             Uri intentData = intent.getData();
 
-            Log.d("DEBUG_CODE", intentData + "");
 
             if (intentData != null) {
                 //카카오페이 인증 후 복귀했을 때 결제 후속조치

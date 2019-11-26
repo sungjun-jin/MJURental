@@ -1,6 +1,8 @@
 package com.example.projectmjurental.kakao;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -13,11 +15,13 @@ public class AndroidBridge {
     private String TAG = "AndroidBridge";
     private WebView webView;
     private Context context;
+    private Activity activity;
 
-    public AndroidBridge(WebView webView, Context context) {
+    public AndroidBridge(WebView webView, Context context, Activity activity) {
 
         this.webView = webView;
         this.context = context;
+        this.activity = activity;
 
     }
 
@@ -28,6 +32,15 @@ public class AndroidBridge {
         Toast.makeText(context,"결제 결과 : " + message, Toast.LENGTH_LONG).show();
 
         //메세지에 따라 intent 분기처리 해야함
+
+        if(message.equals("failure")) {
+
+            //결제 실패
+
+            activity.finish();
+
+
+        }
 
     }
 }

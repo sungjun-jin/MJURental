@@ -2,6 +2,14 @@
     <string name="app_name">MJURental</string>
     <string name="kakao_app_key">3bda738bb83b73660b06d25fdbe7b3cf</string>
 
+    <string name="join_email">이메일</string>
+    <string name="join_password">비밀번호</string>
+    <string name="join_re_password">비밀번호 재확인</string>
+    <string name="join_name">이름</string>
+    <string name="join_dept">학과</string>
+    <string name="join_num">학번</string>
+    <string name="cancle">취소</string>
+
     <string name="signup">회원가입</string>
     <string name="signin">로그인</string>
     <string name="email">이메일</string>
