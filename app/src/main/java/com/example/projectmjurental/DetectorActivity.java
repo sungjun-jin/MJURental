@@ -105,7 +105,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.6f;
     private static final float MINIMUM_CONFIDENCE_MULTIBOX = 0.1f;
 
-    private static final float MINIMUM_CONFIDENCE_YOLO = 0.1f; //YOLO 원래는 0.25
+    private static final float MINIMUM_CONFIDENCE_YOLO = 0.5f; //YOLO 원래는 0.25
 
     private static final boolean MAINTAIN_ASPECT = MODE == DetectorMode.YOLO;
 

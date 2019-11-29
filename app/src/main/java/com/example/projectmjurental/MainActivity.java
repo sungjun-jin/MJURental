@@ -155,9 +155,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                //오류
-
-                Log.d("DEBUG_CODE", currentUser.getEmail());
 
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {

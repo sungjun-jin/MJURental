@@ -44,6 +44,8 @@
                 <data android:scheme="iamportkakao" />
                 <!-- 로그인 액티비티 -->
             </intent-filter>
+
+
         </activity>
         <activity android:name=".MainActivity"/>
 

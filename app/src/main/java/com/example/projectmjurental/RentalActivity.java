@@ -1,11 +1,16 @@
 package com.example.projectmjurental;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -16,8 +21,17 @@ import com.example.projectmjurental.data.Const;
 import com.example.projectmjurental.data.Notebook;
 import com.example.projectmjurental.data.Rent;
 import com.example.projectmjurental.adapter.FragmentAdapter;
+import com.example.projectmjurental.data.User;
 import com.example.projectmjurental.fragment.ImageFragment;
+import com.example.projectmjurental.kakao.AndroidBridge;
 import com.example.projectmjurental.kakao.KakaoActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.ArrayList;
@@ -31,11 +45,18 @@ public class RentalActivity extends AppCompatActivity {
     String rentalObject; //대여물품
     ViewPager viewPager;
 
+    FirebaseAuth mAuth; //파이어베이스 연결
+    FirebaseUser currentUser;
+    DatabaseReference userRef;
+    FirebaseDatabase database;
+
     ArrayList<Integer> listImage = new ArrayList<>();
 
     FragmentAdapter fragmentAdapter;
 
     Rent rent = null;
+
+    User loginUser;
 
 
     @Override
@@ -45,10 +66,6 @@ public class RentalActivity extends AppCompatActivity {
 
         init();
 
-        //test용
-//        rentalObject = "명지대학교노트북";
-//        rentalObject = "명지대학교배터리";
-//        rentalObject = "명지대학교계산기";
 
         rent = getRentalObject();
         setImage();
@@ -67,11 +84,12 @@ public class RentalActivity extends AppCompatActivity {
         btnDeposit.setOnClickListener(view -> {
 
             //보증금 결제 누를 시
-            Intent intent = new Intent(getApplicationContext(),KakaoActivity.class);
-            startActivityForResult(intent,102);
+            Intent intent = new Intent(getApplicationContext(), KakaoActivity.class);
+            startActivityForResult(intent, Const.REQ_KAKAO_PAY);
 
         });
     }
+
 
     void setImage() {
 
@@ -131,6 +149,16 @@ public class RentalActivity extends AppCompatActivity {
         btnRent = findViewById(R.id.btnRent);
         textObjectInfo = findViewById(R.id.textObjectInfo);
         viewPager = findViewById(R.id.viewPager);
+
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        userRef = database.getReference(Const.FB_REFER);
+
+
+        getUserInfo();
+
+
     }
 
     Rent getRentalObject() {
@@ -191,11 +219,18 @@ public class RentalActivity extends AppCompatActivity {
 
             //대여 시작, MainActivity로 현재 대여할 물품의 정보를 intent로 넘기고 이동
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.putExtra("Rent", rent);
-            startActivity(intent);
-            finish();
+            if(loginUser.rent) {
+                //보증금 정상 입금 완료
 
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("Rent", rent);
+                startActivity(intent);
+                finish();
+            } else {
+
+                //보증금 입금 필요
+                Toast.makeText(getApplicationContext(),"보증금 결제 후 이용해 주세요.",Toast.LENGTH_SHORT).show();
+            }
         });
 
         builder.setNegativeButton("아니오", (dialogInterface, i) -> {
@@ -213,5 +248,109 @@ public class RentalActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Const.REQ_KAKAO_PAY) {
+
+            if (resultCode == RESULT_OK) {
+
+                if (data != null) {
+
+                    //카카오페이 보증금 결제에 대한 결과를 처리
+
+                    Log.d("DEBUG_CODE","on activity result");
+
+                    boolean result =data.getBooleanExtra("boolean", true);
+
+                    //Firebase Database에 보증금 입금 여부 설정
+
+                    userRef.child(loginUser.num).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            if (!result) {
+
+                                //결제 실패
+                                dataSnapshot.getRef().child("rent").setValue(false);
+
+
+                            } else {
+
+                                //결제 성공
+                                dataSnapshot.getRef().child("rent").setValue(true);
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            Toast.makeText(getApplicationContext(), "DB 오류 : " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    public void getUserInfo() {
+
+        {
+
+            //현재 사용자의 정보를 받아옴
+
+            {
+
+                //현재 로그인한 회원 정보를 가져와 navigation header에 띄우는 메소드
+
+                userRef.addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                            User user;
+                            user = child.getValue(User.class);
+
+                            if (user.email.equals(mAuth.getCurrentUser().getEmail())) {
+
+                                loginUser = user;
+
+
+                                if(loginUser.rent) {
+
+                                    //보증금 입금 여부에 따른 버튼 처리
+                                    btnDeposit.setEnabled(false);
+
+                                } else {
+
+                                    btnDeposit.setEnabled(true);
+                                }
+
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        Log.d("DEBUG_CODE", "회원정보 가져오기 실패");
+                        Toast.makeText(getApplicationContext(), "회원정보를 가져오는데 실패했습니다." + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+            }
+
+
+        }
     }
 }

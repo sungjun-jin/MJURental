@@ -18,4 +18,6 @@ public class Const {
 
     public static final String ADMIN_NUM = "01053387244"; //관리자 번호
 
+    public static final int REQ_KAKAO_PAY = 123;
+
 }
