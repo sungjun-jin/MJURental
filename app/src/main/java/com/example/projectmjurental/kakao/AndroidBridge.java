@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -42,6 +43,11 @@ public class AndroidBridge {
 
     Boolean result;
 
+    String msg;
+
+    public static boolean kakaoPayResult;
+    private final Handler handler = new Handler();
+
     public AndroidBridge(WebView webView, Context context, Activity activity, User user, FirebaseAuth mAuth, FirebaseUser currentUser, FirebaseDatabase database) {
 
         this.webView = webView;
@@ -62,22 +68,36 @@ public class AndroidBridge {
         //결제 Javascript에서 bridge를 통해 넘어온 결제 결과를 앱에서 처리
 
 
-
         //WebView에서 처리된 카카오톡 결과 메세지(String message)에 따라 결과 분기처리
 
-        if (message.equals("success")) {
+        handler.post(() -> {
 
-            user.rent = true; //사용자 정보 변경
-            result = true;
-            KakaoActivity.kakaoPayResult = true;
+            //카카오페이 결과처리 백그라운드 스레드
 
-        } else if (message.equals("failure")) {
+            if (message.equals("success")) {
 
-            user.rent = false; //사용자 정보 변경
-            result = false;
-        }
+                msg = message;
+                Log.d("DEBUG_CODE","msg : " + message);
+                kakaoPayResult = true;
+
+                Log.d("DEBUG_CODE","bridge kakaopay" + kakaoPayResult);
+                Log.d("DEBUG_CODE","result " + result);
+
+            } else if (message.equals("failure")) {
+                msg = message;
+                Log.d("DEBUG_CODE","msg : " + message);
+                Log.d("DEBUG_CODE","bridge kakaopay" + kakaoPayResult);
+            }
+
         activity.finish();
 
+        });
+
+    }
+
+    public void getMsg() {
+
+        Log.d("DEBUG_CODE","getMSg : " + msg);
     }
 
 

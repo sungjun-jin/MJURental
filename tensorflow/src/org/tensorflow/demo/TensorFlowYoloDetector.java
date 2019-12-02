@@ -53,8 +53,8 @@ public class TensorFlowYoloDetector implements Classifier {
     };
 
     private static final String[] LABELS = {
-            "notebook",
             "calculator",
+            "notebook",
             "battery"
     };
 

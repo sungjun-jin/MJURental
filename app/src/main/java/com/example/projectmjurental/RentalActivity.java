@@ -36,6 +36,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static com.example.projectmjurental.kakao.AndroidBridge.kakaoPayResult;
+
+
 
 public class RentalActivity extends AppCompatActivity {
 
@@ -226,6 +229,7 @@ public class RentalActivity extends AppCompatActivity {
                 intent.putExtra("Rent", rent);
                 startActivity(intent);
                 finish();
+
             } else {
 
                 //보증금 입금 필요
@@ -262,26 +266,30 @@ public class RentalActivity extends AppCompatActivity {
 
                     //카카오페이 보증금 결제에 대한 결과를 처리
 
-                    Log.d("DEBUG_CODE","on activity result");
-
-                    boolean result =data.getBooleanExtra("boolean", true);
+//                    boolean result =data.getBooleanExtra("boolean", false);
 
                     //Firebase Database에 보증금 입금 여부 설정
+
+                    Log.d("DEBUG_CODE","intent result : " + kakaoPayResult);
 
                     userRef.child(loginUser.num).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            if (!result) {
-
-                                //결제 실패
-                                dataSnapshot.getRef().child("rent").setValue(false);
+                            if (kakaoPayResult) {
+                                //결제 성공
+                                dataSnapshot.getRef().child("rent").setValue(true);
+                                Log.d("DEBUG_CODE","db changed true");
+                                Log.d("DEBUG_CODE","kakaopay result" + kakaoPayResult);
 
 
                             } else {
 
-                                //결제 성공
-                                dataSnapshot.getRef().child("rent").setValue(true);
+                                //결제 실패
+                                dataSnapshot.getRef().child("rent").setValue(false);
+                                Log.d("DEBUG_CODE","db changed false");
+                                Log.d("DEBUG_CODE","kakaopay result" + kakaoPayResult);
+
                             }
 
                         }

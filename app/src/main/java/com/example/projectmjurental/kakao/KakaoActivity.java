@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static com.example.projectmjurental.kakao.AndroidBridge.kakaoPayResult;
 
 
 public class KakaoActivity extends Activity {
@@ -48,7 +49,7 @@ public class KakaoActivity extends Activity {
     DatabaseReference userRef;
     FirebaseDatabase database;
 
-    public static boolean kakaoPayResult;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +64,16 @@ public class KakaoActivity extends Activity {
         webview.loadUrl("file:///android_asset/www/kakao.html");
         webview.addJavascriptInterface(androidBridge,"Android");
 
+        androidBridge.getMsg();
+
 
         //카카오 페이 결제에 대한 결과를 RentalActivity에 넘겨준다
         Intent kakaoIntent = new Intent();
         kakaoIntent.putExtra("boolean",kakaoPayResult);
         setResult(Activity.RESULT_OK,kakaoIntent);
+
+        Intent intent = getIntent();
+
     }
 
     private void init() {
@@ -86,6 +92,7 @@ public class KakaoActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+        Log.d("DEBUG_CODE","onNewIntent");
 
     }
 
@@ -93,21 +100,28 @@ public class KakaoActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
+        Log.d("DEBUG_CODE","onResume1");
+
         Intent intent = getIntent();
         if (intent != null) {
             Uri intentData = intent.getData();
+            Log.d("DEBUG_CODE","onResume2");
 
             if (intentData != null) {
                 //카카오페이 인증 후 복귀했을 때 결제 후속조치
                 String url = intentData.toString();
+                Log.d("DEBUG_CODE","onResume3");
 
                 if (url.startsWith(APP_SCHEME)) {
                     String path = url.substring(APP_SCHEME.length());
                     if ("process".equalsIgnoreCase(path)) {
                         webview.loadUrl("javascript:IMP.communicate({result:'process'})");
+                        Log.d("DEBUG_CODE","onResume4");
+
 
                     } else {
                         webview.loadUrl("javascript:IMP.communicate({result:'cancel'})");
+                        Log.d("DEBUG_CODE","onResume5");
 
                     }
                 }
