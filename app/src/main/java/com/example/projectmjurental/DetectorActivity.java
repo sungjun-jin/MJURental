@@ -136,6 +136,11 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
     private BorderedText borderedText;
 
+    //렌탈 대여 인텐트 생성
+    //if 문 외부에 인텐트 인스턴스를 생성한 이유는 for문에 의해 많은 액티비티가 한꺼번에 생성되기 때문
+    Intent intent;
+
+
     @Override
     public void onPreviewSizeChosen(final Size size, final int rotation) {
         final float textSizePx =
@@ -148,6 +153,14 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
         int cropSize = TF_OD_API_INPUT_SIZE;
         if (MODE == DetectorMode.YOLO) {
+
+            //intent 처리
+            //intent 액티비티 싱글톤 처리
+            if (intent == null) {
+
+                intent = new Intent(getApplicationContext(), RentalActivity.class);
+            }
+
             detector =
                     TensorFlowYoloDetector.create(
                             getAssets(),
@@ -336,21 +349,45 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                             result.setLocation(location);
                             mappedRecognitions.add(result);
 
-                            //이미지 디텍션 코드
+                            //이미지 디텍션 코드처리
 
                             Log.i("YOLO", "DetectorActivity Confidence : " + result.getConfidence());
 
-                            if (result.getTitle().equals("laptop") && result.getConfidence() >= 0.8f) {
+                            if (result.getTitle().equals("notebook") && result.getConfidence() >= 0.6f) {
 
-                                Toast.makeText(getApplicationContext(), "노트북입니다.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), RentalActivity.class);
+                                Toast.makeText(getApplicationContext(), "노트북", Toast.LENGTH_SHORT).show();
                                 intent.putExtra("Object", Const.notebook); //대여할 물품의 이름을 String 형태로 넘겨준다
                                 startActivity(intent); //대여 액티비티로 대여물품의 정보를 넘겨주고 이동
                                 finish();
+
+                            } else if (result.getTitle().equals("calculator") && result.getConfidence() >= 0.6f) {
+
+                                Toast.makeText(getApplicationContext(), "공학용 계산기", Toast.LENGTH_SHORT).show();
+                                intent.putExtra("Object", Const.calculator); //대여할 물품의 이름을 String 형태로 넘겨준다
+                                startActivity(intent); //대여 액티비티로 대여물품의 정보를 넘겨주고 이동
+                                finish();
+
+
+                            } else if (result.getTitle().equals("battery") && result.getConfidence() >= 0.5f) {
+
+                                Toast.makeText(getApplicationContext(), "보조 배터리", Toast.LENGTH_SHORT).show();
+                                intent.putExtra("Object", Const.battery); //대여할 물품의 이름을 String 형태로 넘겨준다
+                                startActivity(intent); //대여 액티비티로 대여물품의 정보를 넘겨주고 이동
+                                finish();
+
+
                             }
 
                             //이미지 디텍션 코드
                         }
+
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        break;
                     }
 
                     tracker.trackResults(mappedRecognitions, luminanceCopy, currTimestamp);

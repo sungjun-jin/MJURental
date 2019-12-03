@@ -248,10 +248,12 @@ public class RentalActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         //뒤로가기를 누르면 MainActivity로 간다
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+
     }
 
     @Override
