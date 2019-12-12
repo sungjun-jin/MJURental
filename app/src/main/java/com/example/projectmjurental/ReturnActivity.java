@@ -196,7 +196,7 @@ public class ReturnActivity extends AppCompatActivity {
 
                 //연결 끊김
 
-                Toast.makeText(getApplicationContext(), "Connection lost", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "블루투스 연결 종료", Toast.LENGTH_SHORT).show();
                 isBluetooth = false;
                 setRentalButton();
 
@@ -341,7 +341,9 @@ public class ReturnActivity extends AppCompatActivity {
 
                 //반납 버튼
                 Rent rental;
+                //RecylerView의 인덱스를 가져와 반납하고자 하는 물품의 인스턴스를 가져온다
                 rental = customAdapter.data.get(index);
+                //대여 중인 상태를 반납 완료 상태로 바꿔준다
                 rental.renting = false;
 
                 //SimpleDateFormat으로 현재 시간을 년:월:일:시:분:초로 포맷 설정
@@ -351,6 +353,7 @@ public class ReturnActivity extends AppCompatActivity {
 
                 //현재 시간을 앞서 설정한 포맷으로 가져온다
                 String endTime = sdf.format(new Date());
+                //파이어베이스에 반납 일시를 저장한다
                 updateData(endTime);
 
                 Toast.makeText(this, "반납이 완료되었습니다.", Toast.LENGTH_SHORT).show();

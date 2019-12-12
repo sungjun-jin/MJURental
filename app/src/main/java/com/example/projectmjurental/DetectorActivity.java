@@ -353,14 +353,14 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
                             Log.i("YOLO", "DetectorActivity Confidence : " + result.getConfidence());
 
-                            if (result.getTitle().equals("notebook") && result.getConfidence() >= 0.6f) {
+                            if (result.getTitle().equals("notebook") && result.getConfidence() >= 0.4f) {
 
                                 Toast.makeText(getApplicationContext(), "노트북", Toast.LENGTH_SHORT).show();
                                 intent.putExtra("Object", Const.notebook); //대여할 물품의 이름을 String 형태로 넘겨준다
                                 startActivity(intent); //대여 액티비티로 대여물품의 정보를 넘겨주고 이동
                                 finish();
 
-                            } else if (result.getTitle().equals("calculator") && result.getConfidence() >= 0.6f) {
+                            } else if (result.getTitle().equals("calculator") && result.getConfidence() >= 0.4f) {
 
                                 Toast.makeText(getApplicationContext(), "공학용 계산기", Toast.LENGTH_SHORT).show();
                                 intent.putExtra("Object", Const.calculator); //대여할 물품의 이름을 String 형태로 넘겨준다
@@ -368,7 +368,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                                 finish();
 
 
-                            } else if (result.getTitle().equals("battery") && result.getConfidence() >= 0.5f) {
+                            } else if (result.getTitle().equals("battery") && result.getConfidence() >= 0.4f) {
 
                                 Toast.makeText(getApplicationContext(), "보조 배터리", Toast.LENGTH_SHORT).show();
                                 intent.putExtra("Object", Const.battery); //대여할 물품의 이름을 String 형태로 넘겨준다

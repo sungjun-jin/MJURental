@@ -3,8 +3,8 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/account"
-            android:title="회원정보">
+            android:id="@+id/appInfo"
+            android:title="애플리케이션 정보">
         </item>
     </group>
 

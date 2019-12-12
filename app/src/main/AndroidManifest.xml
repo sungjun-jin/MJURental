@@ -13,13 +13,8 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:theme">
-        <activity android:name=".DetectorActivity"/>
-        <activity android:name=".ReturnActivity"/>
-        <activity android:name=".ReportActivity" />
-        <activity android:name=".RentalActivity" />
-        <activity android:name=".QRActivity" />
-        <activity android:name="org.tensorflow.demo.DetectorActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".AppInfoActivity"></activity>
+        <activity android:name=".SplashScreen">
 
             <!-- 엑티비티 런쳐 -->
             <intent-filter>
@@ -29,8 +24,14 @@
             </intent-filter>
 
             <!-- 엑티비티 런쳐 -->
-
         </activity>
+        <activity android:name=".DetectorActivity" />
+        <activity android:name=".ReturnActivity" />
+        <activity android:name=".ReportActivity" />
+        <activity android:name=".RentalActivity" />
+        <activity android:name=".QRActivity" />
+        <activity android:name="org.tensorflow.demo.DetectorActivity" />
+        <activity android:name=".LoginActivity"></activity>
         <activity android:name=".user.JoinActivity" />
         <activity android:name=".kakao.KakaoActivity">
 
@@ -44,19 +45,17 @@
                 <data android:scheme="iamportkakao" />
                 <!-- 로그인 액티비티 -->
             </intent-filter>
-
-
         </activity>
-        <activity android:name=".MainActivity"/>
-
+        <activity android:name=".MainActivity" />
     </application>
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>

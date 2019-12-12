@@ -183,7 +183,8 @@ public class KakaoActivity extends Activity {
                             Log.d("DEBUG_CODE","Kakao User email : " + loginUser.email);
                             Log.d("DEBUG_CODE","Kakao User num : " + loginUser.num);
 
-                            kakaoPayResult = loginUser.rent;
+                            kakaoPayResult = true;
+
                         }
                     }
                 }

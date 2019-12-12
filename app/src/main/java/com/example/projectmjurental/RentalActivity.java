@@ -222,6 +222,8 @@ public class RentalActivity extends AppCompatActivity {
 
             //대여 시작, MainActivity로 현재 대여할 물품의 정보를 intent로 넘기고 이동
 
+            //경진대회 시연용 코드
+
             if(loginUser.rent) {
                 //보증금 정상 입금 완료
 
@@ -235,6 +237,8 @@ public class RentalActivity extends AppCompatActivity {
                 //보증금 입금 필요
                 Toast.makeText(getApplicationContext(),"보증금 결제 후 이용해 주세요.",Toast.LENGTH_SHORT).show();
             }
+
+            //경진대회 시연용 코드
         });
 
         builder.setNegativeButton("아니오", (dialogInterface, i) -> {

@@ -198,13 +198,12 @@ public class MainActivity extends AppCompatActivity {
 
             switch (menuItem.getItemId()) {
 
-                case R.id.account:
+                case R.id.appInfo:
 
-                    //회원정보
+                    //애플리케이션 정보
 
-                    // 1. 회원 학번, 대여 횟수, 고장신고 접수 횟수
-
-                    Toast.makeText(getApplicationContext(), "계정 버튼", Toast.LENGTH_SHORT).show();
+                    Intent appInfoIntent = new Intent(getApplicationContext(), AppInfoActivity.class);
+                    startActivity(appInfoIntent);
                     break;
 
                 case R.id.report:

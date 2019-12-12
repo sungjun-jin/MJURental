@@ -87,6 +87,7 @@ public class AndroidBridge {
                 msg = message;
                 Log.d("DEBUG_CODE","msg : " + message);
                 Log.d("DEBUG_CODE","bridge kakaopay" + kakaoPayResult);
+
             }
 
         activity.finish();
